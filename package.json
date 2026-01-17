@@ -1,11 +1,11 @@
 {
-  "name": "podme",
+  "name": "voicci",
   "version": "1.0.0",
-  "description": "AI Audiobook Generator using XTTS v2",
+  "description": "Voicci CLI - AI Audiobook Generator and Text Summarizer using XTTS v2",
   "type": "module",
   "main": "cli/index.js",
   "bin": {
-    "podme": "./cli/index.js"
+    "voicci": "./cli/index.js"
   },
   "scripts": {
     "start": "node cli/index.js",
@@ -17,10 +17,23 @@
     "tts",
     "xtts",
     "ai",
-    "speech"
+    "speech",
+    "text-to-speech",
+    "cli",
+    "pdf",
+    "epub",
+    "summarization"
   ],
   "author": "Voicci",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/voicci/voicci-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voicci/voicci-cli/issues"
+  },
+  "homepage": "https://voicci.com/voicci-cli",
   "dependencies": {
     "commander": "^11.1.0",
     "uuid": "^9.0.1",

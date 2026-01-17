@@ -1,0 +1,48 @@
+# Development and documentation files
+*.md
+!README.md
+!LICENSE
+
+# Tests
+tests/
+coverage/
+
+# Configuration files
+.git/
+.gitignore
+.DS_Store
+.env
+.vscode/
+.idea/
+
+# Documentation (except README)
+docs/
+BRANDING-FINAL.md
+URL-STRUCTURE.md
+DEPLOYMENT-VOICCI-CLI.md
+SECURITY-AUDIT.md
+SECURITY-FINDINGS.md
+UI-CONSISTENCY-CHECK.md
+RENAME-COMPLETE.md
+LEGAL-REVIEW.md
+SUMMARY-FEATURE.md
+QUICKSTART.md
+
+# Build artifacts
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# Website (not needed in npm package)
+website/

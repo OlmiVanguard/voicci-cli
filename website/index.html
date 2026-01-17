@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PodMe - AI Audiobook Generator</title>
+  <title>Voicci CLI - AI Audiobook Generator</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -155,10 +155,23 @@
       box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
     }
 
-    .btn-secondary {
-      background: white;
-      color: #667eea;
-      border: 2px solid #667eea;
+    .btn-github {
+      background: #24292e;
+      color: white;
+      border: 2px solid #24292e;
+    }
+
+    .btn-github:hover {
+      background: #2f363d;
+      box-shadow: 0 10px 30px rgba(36, 41, 46, 0.4);
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    }
+
+    .btn-download:hover {
+      box-shadow: 0 10px 30px rgba(72, 187, 120, 0.4);
     }
 
     .consent-box {
@@ -213,11 +226,19 @@
   <div class="container">
     <!-- Hero Section -->
     <div class="hero">
-      <h1>🎧 PodMe</h1>
-      <p>Transform text files into high-quality audiobooks using local AI</p>
+      <h1>🎧 Voicci CLI</h1>
+      <p>Command-line tool to transform text files into high-quality audiobooks using local AI</p>
       <div>
-        <a href="#install" class="btn">Install Now</a>
-        <a href="https://github.com/voicci/podme" class="btn btn-secondary">View on GitHub</a>
+        <a href="https://voicci.com/voicci-cli/install.sh" class="btn btn-download" download>⬇️ Download Installer</a>
+        <a href="https://github.com/voicci/voicci-cli" class="btn btn-github" target="_blank">
+          <svg height="16" width="16" viewBox="0 0 16 16" style="display: inline-block; vertical-align: middle; margin-right: 8px; fill: white;">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+      <div style="margin-top: 20px; font-size: 0.9em; color: #666;">
+        or install directly: <code style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px;">curl -fsSL https://voicci.com/voicci-cli/install.sh | bash</code>
       </div>
     </div>
 
@@ -226,6 +247,10 @@
       <div class="feature">
         <h3>🔒 100% Private</h3>
         <p>Runs entirely on your computer. No cloud, no tracking, no data collection.</p>
+      </div>
+      <div class="feature">
+        <h3>📝 AI Summaries</h3>
+        <p>Generate analytical summaries at 2-5% of original length with clear language.</p>
       </div>
       <div class="feature">
         <h3>🎯 Natural Voice</h3>
@@ -247,11 +272,11 @@
 
       <div class="warning">
         <h3>📚 Copyright Responsibility</h3>
-        <p><strong>You are responsible for ensuring you have the legal right to process any content you use with PodMe.</strong></p>
-        <p>Do not use PodMe to infringe on copyrights. Voicci provides this tool "as-is" and is not responsible for how you use it.</p>
+        <p><strong>You are responsible for ensuring you have the legal right to process any content you use with Voicci.</strong></p>
+        <p>Do not use Voicci to infringe on copyrights. Voicci provides this tool "as-is" and is not responsible for how you use it.</p>
       </div>
 
-      <h3>✓ What PodMe Is</h3>
+      <h3>✓ What Voicci Is</h3>
       <ul style="list-style: none; padding-left: 20px;">
         <li>✓ Open-source text-to-speech converter (MIT License)</li>
         <li>✓ Runs 100% locally on your computer</li>
@@ -297,7 +322,7 @@
             <ul style="margin-top: 10px; margin-left: 20px;">
               <li>I am responsible for compliance with copyright laws</li>
               <li>I will only process content I have rights to use</li>
-              <li>Voicci provides PodMe "as-is" with no warranties</li>
+              <li>Voicci provides Voicci "as-is" with no warranties</li>
               <li>I have read and accept the <a href="#terms">Terms of Service</a></li>
             </ul>
           </span>
@@ -316,20 +341,24 @@
 
         <div class="install-box">
           <div style="color: #cbd5e0; margin-bottom: 15px;"># Step 1: Install Node.js dependencies</div>
-          <code>$ curl -fsSL https://voicci.com/podme/install.sh | bash</code>
+          <code>$ curl -fsSL https://voicci.com/voicci-cli/install.sh | bash</code>
 
           <div style="color: #cbd5e0; margin: 20px 0 15px;"># Step 2: Install Python dependencies (automatic during first run)</div>
-          <code>$ podme --help</code>
+          <code>$ voicci --help</code>
 
-          <div style="color: #cbd5e0; margin: 20px 0 15px;"># Step 3: Start using PodMe</div>
-          <code>$ podme mybook.pdf</code>
-          <code>$ podme "The Great Gatsby"</code>
+          <div style="color: #cbd5e0; margin: 20px 0 15px;"># Step 3: Start using Voicci</div>
+          <code>$ voicci mybook.pdf</code>
+          <code>$ voicci "The Great Gatsby"</code>
+
+          <div style="color: #cbd5e0; margin: 20px 0 15px;"># Generate summaries (2-5% of original length)</div>
+          <code>$ voicci summary mybook.pdf</code>
+          <code>$ voicci --with-summary "1984"</code>
         </div>
 
         <h3>Manual Installation (Alternative)</h3>
         <div class="install-box">
-          <code>$ git clone https://github.com/voicci/podme.git</code>
-          <code>$ cd podme</code>
+          <code>$ git clone https://github.com/voicci/voicci-cli.git</code>
+          <code>$ cd voicci</code>
           <code>$ npm install</code>
           <code>$ npm link</code>
           <code>$ pip3 install TTS torch torchaudio</code>
@@ -343,10 +372,10 @@
       <h2>Terms of Service</h2>
 
       <h3>1. Acceptance of Terms</h3>
-      <p>By downloading, installing, or using PodMe, you agree to these terms.</p>
+      <p>By downloading, installing, or using Voicci, you agree to these terms.</p>
 
       <h3>2. Description of Service</h3>
-      <p>PodMe is an open-source command-line tool that converts text files to audio using AI text-to-speech technology. PodMe runs entirely on your local computer.</p>
+      <p>Voicci is an open-source command-line tool that converts text files to audio using AI text-to-speech technology. Voicci runs entirely on your local computer.</p>
 
       <h3>3. User Responsibilities</h3>
       <p>You are solely responsible for:</p>
@@ -354,11 +383,11 @@
         <li>Ensuring you have legal rights to any content you process</li>
         <li>Compliance with copyright laws in your jurisdiction</li>
         <li>Your use of any optional features</li>
-        <li>Any consequences of your use of PodMe</li>
+        <li>Any consequences of your use of Voicci</li>
       </ul>
 
       <h3>4. Prohibited Uses</h3>
-      <p>You may not use PodMe to:</p>
+      <p>You may not use Voicci to:</p>
       <ul style="margin-left: 30px;">
         <li>Infringe on copyrights or intellectual property rights</li>
         <li>Violate any applicable laws or regulations</li>
@@ -366,16 +395,16 @@
       </ul>
 
       <h3>5. No Warranties</h3>
-      <p>PodMe is provided "AS-IS" without any warranties, express or implied. Voicci makes no guarantees about functionality, performance, accuracy, availability, or fitness for any particular purpose.</p>
+      <p>Voicci is provided "AS-IS" without any warranties, express or implied. Voicci makes no guarantees about functionality, performance, accuracy, availability, or fitness for any particular purpose.</p>
 
       <h3>6. Limitation of Liability</h3>
-      <p>To the maximum extent permitted by law, Voicci is not liable for your use of PodMe, any content you process, or third-party content sources. You indemnify Voicci against claims arising from your use.</p>
+      <p>To the maximum extent permitted by law, Voicci is not liable for your use of Voicci, any content you process, or third-party content sources. You indemnify Voicci against claims arising from your use.</p>
 
       <h3>7. Open Source License</h3>
-      <p>PodMe is licensed under the MIT License. See <a href="https://github.com/voicci/podme/blob/main/LICENSE">LICENSE file</a> for details.</p>
+      <p>Voicci is licensed under the MIT License. See <a href="https://github.com/voicci/voicci-cli/blob/main/LICENSE">LICENSE file</a> for details.</p>
 
       <h3>8. Third-Party Services</h3>
-      <p>PodMe may provide tools to search for content on third-party websites. Voicci does not control, endorse, or take responsibility for these third-party services or the content available through them.</p>
+      <p>Voicci may provide tools to search for content on third-party websites. Voicci does not control, endorse, or take responsibility for these third-party services or the content available through them.</p>
 
       <h3>9. Contact</h3>
       <p>For questions or support: <a href="mailto:support@voicci.com">support@voicci.com</a></p>
@@ -386,7 +415,7 @@
     <!-- Footer -->
     <div class="footer">
       <p>Made with ❤️ by <a href="https://voicci.com" class="github-link">Voicci</a></p>
-      <p style="margin-top: 10px;">Open Source • MIT License • <a href="https://github.com/voicci/podme" class="github-link">GitHub</a></p>
+      <p style="margin-top: 10px;">Open Source • MIT License • <a href="https://github.com/voicci/voicci-cli" class="github-link">GitHub</a></p>
     </div>
   </div>
 

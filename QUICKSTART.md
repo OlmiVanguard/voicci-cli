@@ -1,16 +1,16 @@
-# PodMe Quick Start Guide
+# Voicci CLI Quick Start Guide
 
 ## Installation (5 minutes)
 
 ### One-Line Install
 ```bash
-curl -fsSL https://voicci.com/podme/install.sh | bash
+curl -fsSL https://voicci.com/voicci-cli/install.sh | bash
 ```
 
 ### Manual Install
 ```bash
 # 1. Navigate to project
-cd ~/Documents/local-codebases/Voicci/podme
+cd ~/Documents/local-codebases/Voicci/voicci
 
 # 2. Install Node.js dependencies
 npm install
@@ -29,48 +29,75 @@ npm link
 
 ### Convert a Book (By Name)
 ```bash
-# PodMe will search, download, and convert
-podme "The Great Gatsby"
-podme "1984 by George Orwell"
-podme "Attention Is All You Need"  # Academic papers work too!
+# Voicci will search, download, and convert
+voicci "The Great Gatsby"
+voicci "1984 by George Orwell"
+voicci "Attention Is All You Need"  # Academic papers work too!
 ```
 
 ### Convert a File
 ```bash
-podme mybook.pdf
-podme story.txt
+voicci mybook.pdf
+voicci story.txt
 ```
+
+### Generate Summaries
+
+```bash
+# Generate analytical summary only (no audio)
+voicci summary mybook.pdf
+voicci --summary "The Great Gatsby"
+
+# Generate both audiobook AND summary
+voicci --with-summary mybook.pdf
+voicci --with-summary "1984"
+```
+
+**Summary Features**:
+- Analytical style with clear, non-specialized vocabulary
+- Retains specificity (key details, names, numbers, facts)
+- Adaptive length: 2-5% of original word count
+  - Short documents (<5K words): 5%
+  - Medium documents (5-20K words): 3-4%
+  - Long documents (20-50K words): 2.5-3%
+  - Books (50K+ words): 2%
+- Three backends: Ollama (local LLM), Python AI, or extractive fallback
+- Saves as text file with statistics
 
 ### Monitor Progress
 ```bash
 # Live progress UI with chapter status
-podme -s <jobId>
+voicci -s <jobId>
 
 # List all jobs
-podme -s
+voicci -s
 ```
 
 ### Manage Audiobooks
 ```bash
 # List completed audiobooks
-podme -l
+voicci -l
 
 # Open audiobook folder
-podme -o <jobId>
+voicci -o <jobId>
 
 # Delete audiobook
-podme -d <jobId>
+voicci -d <jobId>
 ```
 
 ## File Locations
 
 ### macOS
-- Audiobooks: `~/Library/Application Support/podme/audiobooks/`
-- Logs: `~/Library/Application Support/podme/logs/`
+- Audiobooks: `~/Library/Application Support/voicci/audiobooks/`
+- Summaries: `~/Library/Application Support/voicci/audiobooks/*-summary/`
+- Config: `~/Library/Application Support/voicci/config/`
+- Logs: `~/Library/Application Support/voicci/logs/`
 
 ### Linux
-- Audiobooks: `~/.local/share/podme/audiobooks/`
-- Logs: `~/.local/share/podme/logs/`
+- Audiobooks: `~/.local/share/voicci/audiobooks/`
+- Summaries: `~/.local/share/voicci/audiobooks/*-summary/`
+- Config: `~/.config/voicci/`
+- Logs: `~/.local/share/voicci/logs/`
 
 ## Testing
 
@@ -93,27 +120,65 @@ Expected output:
 node cli/index.js --search "The Great Gatsby"
 ```
 
+### Test Summary Generation
+```bash
+# Create test file
+echo "Chapter 1: Introduction
+
+Once upon a time, there was a developer who wanted to create audiobooks.
+
+Chapter 2: The Challenge
+
+The developer faced many technical challenges.
+
+Chapter 3: The Solution
+
+Using AI and careful engineering, the solution emerged.
+
+Chapter 4: Conclusion
+
+The project was a success." > /tmp/test-story.txt
+
+# Generate summary
+voicci summary /tmp/test-story.txt
+
+# Check output
+cat ~/Library/Application\ Support/voicci/audiobooks/test-story-summary/summary.txt
+```
+
+Expected output:
+```
+✅ Summary generated!
+
+📊 Statistics:
+  Original: 54 words
+  Summary: 3 words
+  Ratio: 5.6%
+
+📄 Saved to: ~/Library/Application Support/voicci/audiobooks/test-story-summary/summary.txt
+```
+
 ### Full End-to-End Test
 ```bash
 # 1. Search and download
-podme "Animal Farm"
+voicci "Animal Farm"
 
 # 2. Monitor progress
-podme -s <jobId>
+voicci -s <jobId>
 
 # 3. Open audiobook folder when done
-podme -o <jobId>
+voicci -o <jobId>
 ```
 
 ## Troubleshooting
 
-### "Command not found: podme"
+### "Command not found: voicci"
 ```bash
 # Add to PATH or use full path
-export PATH="$HOME/Documents/local-codebases/Voicci/podme/cli:$PATH"
+export PATH="$HOME/Documents/local-codebases/Voicci/voicci/cli:$PATH"
 
 # Or use full path
-node ~/Documents/local-codebases/Voicci/podme/cli/index.js --help
+node ~/Documents/local-codebases/Voicci/voicci/cli/index.js --help
 ```
 
 ### "Python module not found: TTS"
@@ -148,8 +213,8 @@ Jobs run in background - you can close terminal and continue working.
 
 ```bash
 # Step 1: Start conversion
-$ podme "Animal Farm by George Orwell"
-🎧 PodMe - Audiobook Generator
+$ voicci "Animal Farm by George Orwell"
+🎧 Voicci - Audiobook Generator
 
 Processing: "Animal Farm by George Orwell"
 
@@ -178,15 +243,15 @@ Processing: "Animal Farm by George Orwell"
 ✅ Job queued successfully!
 
 Monitor progress:
-  podme -s abc-123
+  voicci -s abc-123
 
 # Step 2: Check status
-$ podme -s abc-123
+$ voicci -s abc-123
 [Beautiful terminal UI with progress bars]
 
 # Step 3: Open when done
-$ podme -o abc-123
-Opened: ~/Library/Application Support/podme/audiobooks/animal_farm_123456/
+$ voicci -o abc-123
+Opened: ~/Library/Application Support/voicci/audiobooks/animal_farm_123456/
 ```
 
 ## Tips & Tricks
@@ -194,42 +259,42 @@ Opened: ~/Library/Application Support/podme/audiobooks/animal_farm_123456/
 ### Search Before Converting
 ```bash
 # Preview results first
-podme --search "The Great Gatsby"
+voicci --search "The Great Gatsby"
 
 # Then convert
-podme "The Great Gatsby"
+voicci "The Great Gatsby"
 ```
 
 ### Batch Processing
 ```bash
 # Queue multiple books
-podme "1984"
-podme "Animal Farm"
-podme "Brave New World"
+voicci "1984"
+voicci "Animal Farm"
+voicci "Brave New World"
 
 # Check status of all jobs
-podme -s
+voicci -s
 ```
 
 ### Managing Storage
 ```bash
 # List all audiobooks
-podme -l
+voicci -l
 
 # Delete old ones
-podme -d <jobId>
+voicci -d <jobId>
 ```
 
 ## Next Steps
 
-1. Try converting a book: `podme "The Great Gatsby"`
-2. Watch the progress UI: `podme -s <jobId>`
+1. Try converting a book: `voicci "The Great Gatsby"`
+2. Watch the progress UI: `voicci -s <jobId>`
 3. Listen to your audiobook!
 
 ## Support
 
-- GitHub: https://github.com/yourusername/podme
-- Website: https://voicci.com/podme
+- GitHub: https://github.com/voicci/voicci-cli-cli
+- Website: https://voicci.com/voicci-cli
 - Issues: Report bugs on GitHub
 
 ---

@@ -1,4 +1,4 @@
-# PodMe Deployment Checklist
+# Voicci Deployment Checklist
 
 ## ✅ Pre-Deployment (Complete)
 
@@ -60,9 +60,9 @@
 ### End-to-End
 - [ ] Full pipeline test:
   ```bash
-  podme "Animal Farm by George Orwell"
+  voicci "Animal Farm by George Orwell"
   ```
-- [ ] Monitor progress: `podme -s <jobId>`
+- [ ] Monitor progress: `voicci -s <jobId>`
 - [ ] Verify audiobook created
 - [ ] Test audio playback
 - [ ] Check all chapters present
@@ -73,11 +73,11 @@
 - [ ] Create private repository
 - [ ] Push all code:
   ```bash
-  cd ~/Documents/local-codebases/Voicci/podme
+  cd ~/Documents/local-codebases/Voicci/voicci
   git init
   git add .
-  git commit -m "Initial commit: PodMe audiobook generator"
-  gh repo create OlmiVanguard/podme --private --source=. --push
+  git commit -m "Initial commit: Voicci audiobook generator"
+  gh repo create OlmiVanguard/voicci --private --source=. --push
   ```
 - [ ] Add README.md to repo root
 - [ ] Create release tag: `v1.0.0`
@@ -85,29 +85,29 @@
 ### Voicci.com Deployment
 - [ ] Copy install script to server:
   ```bash
-  scp install.sh user@voicci.com:/var/www/voicci.com/podme/install.sh
+  scp install.sh user@voicci.com:/var/www/voicci.com/voicci-cli/install.sh
   ```
 - [ ] Copy landing page:
   ```bash
-  scp public/podme.html user@voicci.com:/var/www/voicci.com/podme/index.html
+  scp public/voicci.html user@voicci.com:/var/www/voicci.com/voicci-cli/index.html
   ```
 - [ ] Set permissions:
   ```bash
-  ssh user@voicci.com "chmod +x /var/www/voicci.com/podme/install.sh"
+  ssh user@voicci.com "chmod +x /var/www/voicci.com/voicci-cli/install.sh"
   ```
 - [ ] Test install script URL:
   ```bash
-  curl -fsSL https://voicci.com/podme/install.sh | bash
+  curl -fsSL https://voicci.com/voicci-cli/install.sh | bash
   ```
 
 ### Claude Code Skill
 - [ ] Create skill directory:
   ```bash
-  mkdir -p ~/.claude/skills/podme
+  mkdir -p ~/.claude/skills/voicci
   ```
 - [ ] Create skill manifest
 - [ ] Write skill script
-- [ ] Test `/podme` command
+- [ ] Test `/voicci` command
 - [ ] Add to MCP config
 
 ## 🧪 Post-Deployment Testing

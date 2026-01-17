@@ -89,7 +89,7 @@ console.log('Test 3: Valid File Paths');
 try {
   // Create temp test file
   const tempDir = os.tmpdir();
-  const testFile = path.join(tempDir, 'podme-test.txt');
+  const testFile = path.join(tempDir, 'voicci-test.txt');
   fs.writeFileSync(testFile, 'test content');
 
   // Should accept valid file in allowed directory
@@ -164,7 +164,7 @@ console.log('Test 5: Command Injection Prevention');
 try {
   // Create malicious filename that would cause command injection
   const tempDir = os.tmpdir();
-  const malicious = path.join(tempDir, 'test.txt"; rm -rf /tmp/podme-test; echo "pwned.txt');
+  const malicious = path.join(tempDir, 'test.txt"; rm -rf /tmp/voicci-test; echo "pwned.txt');
 
   // Path validator should sanitize this
   try {
@@ -204,7 +204,7 @@ try {
 console.log('Test 7: Output Directory Validation');
 try {
   const tempDir = os.tmpdir();
-  const testDir = path.join(tempDir, 'podme-test-output-' + Date.now());
+  const testDir = path.join(tempDir, 'voicci-test-output-' + Date.now());
 
   // Should create directory if it doesn't exist
   const validated = pathValidator.validateOutputDir(testDir);

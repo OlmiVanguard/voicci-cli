@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# PodMe Installer
+# Voicci Installer
 # Converts PDF/text files to high-quality audiobooks using XTTS v2 AI
 
 set -e
@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}╔════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║         PodMe Installer v1.0          ║${NC}"
+echo -e "${BLUE}║         Voicci Installer v1.0          ║${NC}"
 echo -e "${BLUE}║  AI Audiobook Generator (XTTS v2)     ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════╝${NC}"
 echo ""
@@ -28,7 +28,7 @@ esac
 
 if [[ "$OS_TYPE" == "UNKNOWN"* ]]; then
     echo -e "${RED}✗${NC} Unsupported operating system: ${OS}"
-    echo "PodMe currently supports macOS and Linux only."
+    echo "Voicci currently supports macOS and Linux only."
     exit 1
 fi
 
@@ -93,9 +93,9 @@ fi
 
 # Determine installation directory
 if [[ "$OS_TYPE" == "Mac" ]]; then
-    INSTALL_DIR="$HOME/Library/Application Support/podme"
+    INSTALL_DIR="$HOME/Library/Application Support/voicci"
 else
-    INSTALL_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/podme"
+    INSTALL_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/voicci"
 fi
 
 echo ""
@@ -116,12 +116,12 @@ echo "Creating directories..."
 mkdir -p "$INSTALL_DIR"/{lib,cli,backend}
 echo -e "${GREEN}✓${NC} Directories created"
 
-# Download PodMe files (in production, this would download from GitHub/website)
+# Download Voicci files (in production, this would download from GitHub/website)
 echo ""
-echo "Installing PodMe..."
+echo "Installing Voicci..."
 
 # For now, we'll create the files directly
-# In production, this would be: curl -fsSL https://voicci.com/podme/podme.tar.gz | tar -xz -C "$INSTALL_DIR"
+# In production, this would be: curl -fsSL https://voicci.com/voicci-cli/voicci.tar.gz | tar -xz -C "$INSTALL_DIR"
 
 # Install Node.js dependencies
 cd "$INSTALL_DIR"
@@ -130,12 +130,12 @@ echo "Installing Node.js dependencies..."
 
 cat > package.json <<'EOF'
 {
-  "name": "podme",
+  "name": "voicci",
   "version": "1.0.0",
   "description": "AI Audiobook Generator using XTTS v2",
   "type": "module",
   "bin": {
-    "podme": "./cli/index.js"
+    "voicci": "./cli/index.js"
   },
   "dependencies": {
     "commander": "^11.1.0",
@@ -173,8 +173,8 @@ echo -e "${GREEN}✓${NC} XTTS v2 model downloaded"
 # Create symlink for global access
 BIN_DIR="/usr/local/bin"
 if [[ -w "$BIN_DIR" ]]; then
-    ln -sf "$INSTALL_DIR/cli/index.js" "$BIN_DIR/podme"
-    echo -e "${GREEN}✓${NC} Global command 'podme' installed"
+    ln -sf "$INSTALL_DIR/cli/index.js" "$BIN_DIR/voicci"
+    echo -e "${GREEN}✓${NC} Global command 'voicci' installed"
 else
     echo -e "${YELLOW}⚠${NC} Could not create global command (insufficient permissions)"
     echo "Add to your PATH manually: export PATH=\"$INSTALL_DIR/cli:\$PATH\""
@@ -187,12 +187,12 @@ echo -e "${GREEN}║   Installation Complete! 🎉           ║${NC}"
 echo -e "${GREEN}╚════════════════════════════════════════╝${NC}"
 echo ""
 echo "Usage:"
-echo -e "  ${BLUE}podme mybook.pdf${NC}          - Convert PDF to audiobook"
-echo -e "  ${BLUE}podme -s${NC}                   - Check all job statuses"
-echo -e "  ${BLUE}podme -l${NC}                   - List completed audiobooks"
-echo -e "  ${BLUE}podme -o <jobId>${NC}          - Open audiobook folder"
+echo -e "  ${BLUE}voicci mybook.pdf${NC}          - Convert PDF to audiobook"
+echo -e "  ${BLUE}voicci -s${NC}                   - Check all job statuses"
+echo -e "  ${BLUE}voicci -l${NC}                   - List completed audiobooks"
+echo -e "  ${BLUE}voicci -o <jobId>${NC}          - Open audiobook folder"
 echo ""
 echo "Installation location: $INSTALL_DIR"
 echo ""
-echo "Get started: podme --help"
+echo "Get started: voicci --help"
 echo ""

@@ -1,4 +1,4 @@
-# PodMe Hardening Plan
+# Voicci Hardening Plan
 
 ## Status: 95% Complete → Hardening to Production-Ready
 
@@ -22,7 +22,7 @@
   - Reject paths with `..`, `~`, absolute paths outside user space
   - Sanitize filenames for output directories
 
-**Implementation**: `/Users/danielmatthews-ferrero/Documents/local-codebases/Voicci/podme/lib/path-validator.js`
+**Implementation**: `/Users/danielmatthews-ferrero/Documents/local-codebases/Voicci/voicci/lib/path-validator.js`
 
 ```javascript
 // Prevent path traversal

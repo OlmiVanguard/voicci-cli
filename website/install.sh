@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# PodMe Installation Script
-# Safe installation from voicci.com/podme
+# Voicci Installation Script
+# Safe installation from voicci.com/voicci-cli
 
 set -e  # Exit on error
 
 echo ""
-echo "🎧 PodMe - AI Audiobook Generator"
+echo "🎧 Voicci - AI Audiobook Generator"
 echo "=================================="
 echo ""
 
@@ -26,12 +26,24 @@ esac
 
 if [ "$MACHINE" = "UNKNOWN:${OS}" ]; then
     echo -e "${RED}Error: Unsupported operating system: ${OS}${NC}"
-    echo "PodMe currently supports macOS and Linux only."
+    echo "Voicci currently supports macOS and Linux only."
     exit 1
 fi
 
 echo -e "${GREEN}✓${NC} Detected: $MACHINE"
 echo ""
+
+# Check git
+if ! command -v git &> /dev/null; then
+    echo -e "${RED}✗${NC} git not found"
+    echo ""
+    echo "Please install git:"
+    echo "  macOS: brew install git"
+    echo "  Linux: sudo apt-get install git"
+    exit 1
+fi
+
+echo -e "${GREEN}✓${NC} git $(git --version | cut -d' ' -f3)"
 
 # Check Node.js
 if ! command -v node &> /dev/null; then
@@ -89,12 +101,12 @@ echo ""
 # Legal disclaimer
 echo -e "${YELLOW}⚠️  IMPORTANT LEGAL NOTICE${NC}"
 echo ""
-echo "By installing PodMe, you agree that:"
+echo "By installing Voicci, you agree that:"
 echo "  • You are responsible for compliance with copyright laws"
 echo "  • You will only process content you have rights to use"
-echo "  • Voicci provides PodMe 'as-is' with no warranties"
+echo "  • Voicci provides Voicci 'as-is' with no warranties"
 echo ""
-echo "Do NOT use PodMe to infringe on copyrights."
+echo "Do NOT use Voicci to infringe on copyrights."
 echo ""
 echo "────────────────────────────────────"
 echo ""
@@ -107,17 +119,17 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 echo ""
-echo "Installing PodMe..."
+echo "Installing Voicci..."
 echo ""
 
 # Create temp directory
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
 
-# Download from GitHub (or serve from voicci.com/podme/releases)
-echo "Downloading PodMe..."
-git clone --depth 1 https://github.com/voicci/podme.git
-cd podme
+# Download from GitHub (or serve from voicci.com/voicci-cli/releases)
+echo "Downloading Voicci..."
+git clone --depth 1 https://github.com/voicci/voicci-cli.git
+cd voicci
 
 # Install Node dependencies
 echo ""
@@ -130,13 +142,13 @@ echo "Installing globally..."
 npm link
 
 echo ""
-echo -e "${GREEN}✓${NC} PodMe installed successfully!"
+echo -e "${GREEN}✓${NC} Voicci installed successfully!"
 echo ""
 
 # Prompt for Python dependencies
 echo "────────────────────────────────────"
 echo ""
-echo "PodMe requires Python dependencies:"
+echo "Voicci requires Python dependencies:"
 echo "  • TTS (text-to-speech library)"
 echo "  • PyTorch (AI framework)"
 echo "  • torchaudio (audio processing)"
@@ -184,16 +196,16 @@ echo ""
 echo -e "${GREEN}🎉 Installation complete!${NC}"
 echo ""
 echo "Get started:"
-echo "  podme --help"
-echo "  podme mybook.pdf"
-echo '  podme "The Great Gatsby"'
+echo "  voicci --help"
+echo "  voicci mybook.pdf"
+echo '  voicci "The Great Gatsby"'
 echo ""
 echo "Configure:"
-echo "  podme config show"
-echo "  podme config set-profile high"
+echo "  voicci config show"
+echo "  voicci config set-profile high"
 echo ""
 echo "Documentation:"
-echo "  https://voicci.com/podme/docs"
+echo "  https://voicci.com/voicci-cli/docs"
 echo ""
 echo "════════════════════════════════════"
 echo ""

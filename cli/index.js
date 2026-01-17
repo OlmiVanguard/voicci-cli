@@ -8,16 +8,19 @@ import config from '../lib/config.js';
 import configManager from '../lib/config-manager.js';
 import MemoryMonitor from '../lib/memory-monitor.js';
 import TextCleaner from '../lib/text-cleaner.js';
+import Summarizer from '../lib/summarizer.js';
 import Queue from '../lib/queue.js';
-import { exec } from 'child_process';
+import pathValidator from '../lib/path-validator.js';
+import { exec, execFile } from 'child_process';
 import { promisify } from 'util';
 
 const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
 const program = new Command();
 
 program
-  .name('podme')
+  .name('voicci')
   .description('AI Audiobook Generator using XTTS v2')
   .version('1.0.0');
 
@@ -29,6 +32,8 @@ program
   .option('-o, --open [jobId]', 'Open audiobook folder')
   .option('--cancel <jobId>', 'Cancel running job')
   .option('--search <query>', 'Search for book/paper without downloading')
+  .option('--summary', 'Generate text summary only (no audio)')
+  .option('--with-summary', 'Generate both audiobook and summary')
   .action(async (input, options) => {
     try {
       // Status check
@@ -71,11 +76,22 @@ program
       if (input) {
         // Check if input is a file path
         if (fs.existsSync(input)) {
-          await processFile(input);
+          // Validate file path for security
+          try {
+            const validatedPath = pathValidator.validateFilePath(input, {
+              mustExist: true,
+              allowedExtensions: ['.pdf', '.txt']
+            });
+            await processFile(validatedPath, options);
+          } catch (error) {
+            console.error('Error: Invalid file path');
+            console.error(error.message);
+            process.exit(1);
+          }
         } else {
           // Treat as search query
           console.log(`Searching for: "${input}"\n`);
-          await searchAndDownload(input);
+          await searchAndDownload(input, options);
         }
       } else {
         program.help();
@@ -86,8 +102,11 @@ program
     }
   });
 
-async function processFile(filePath) {
-  console.log('🎧 PodMe - Audiobook Generator\n');
+async function processFile(filePath, options = {}) {
+  const summaryOnly = options.summary === true;
+  const withSummary = options.withSummary === true;
+
+  console.log(summaryOnly ? '📝 Voicci - Summary Generator\n' : '🎧 Voicci - Audiobook Generator\n');
   console.log(`Processing: ${path.basename(filePath)}\n`);
 
   // Initialize configuration
@@ -109,7 +128,7 @@ async function processFile(filePath) {
     console.error(`\n❌ File too large: ${fileSizeMB.toFixed(1)}MB (max: ${maxSizeMB.toFixed(0)}MB)`);
     console.log(`\nYour current memory profile (${settings.memoryProfile}) limits file size.`);
     console.log(`To process larger files, switch to a higher profile:\n`);
-    console.log(`  podme config set-profile high  # Supports up to 500MB files\n`);
+    console.log(`  voicci config set-profile high  # Supports up to 500MB files\n`);
     throw new Error('File exceeds size limit for current memory profile');
   }
 
@@ -124,6 +143,12 @@ async function processFile(filePath) {
   console.log(`✓ Extracted ${result.stats.originalLength.toLocaleString()} characters`);
   console.log(`✓ Cleaned to ${result.stats.cleanedLength.toLocaleString()} characters (${result.stats.reductionPercent}% reduction)`);
   console.log(`✓ Detected ${result.chapters.length} chapters\n`);
+
+  // If summary requested, generate it
+  if (summaryOnly || withSummary) {
+    await generateSummary(filePath, result.cleanedText, summaryOnly);
+    if (summaryOnly) return; // Don't create audiobook job
+  }
 
   // Create job
   console.log('📋 Creating job...');
@@ -142,9 +167,49 @@ async function processFile(filePath) {
 
   console.log('\n✅ Job queued successfully!\n');
   console.log('Monitor progress:');
-  console.log(`  podme -s ${job.jobId}\n`);
+  console.log(`  voicci -s ${job.jobId}\n`);
 
   queue.close();
+}
+
+async function generateSummary(filePath, text, summaryOnly = false) {
+  console.log('📝 Generating summary...\n');
+
+  const summarizer = new Summarizer();
+  const result = await summarizer.summarize(text);
+
+  // Save summary to file
+  const outputDir = path.join(
+    config.paths.audiobooks,
+    path.basename(filePath, path.extname(filePath)) + '-summary'
+  );
+
+  fs.mkdirSync(outputDir, { recursive: true });
+  const summaryPath = path.join(outputDir, 'summary.txt');
+  fs.writeFileSync(summaryPath, result.summary);
+
+  // Save metadata
+  const metadataPath = path.join(outputDir, 'metadata.json');
+  fs.writeFileSync(metadataPath, JSON.stringify({
+    source: filePath,
+    generated: new Date().toISOString(),
+    stats: result.stats
+  }, null, 2));
+
+  console.log('✅ Summary generated!\n');
+  console.log('📊 Statistics:');
+  console.log(`  Original: ${result.stats.originalWords.toLocaleString()} words`);
+  console.log(`  Summary: ${result.stats.summaryWords.toLocaleString()} words`);
+  console.log(`  Ratio: ${result.stats.ratio}\n`);
+  console.log(`📄 Saved to: ${summaryPath}\n`);
+
+  if (summaryOnly) {
+    console.log('Preview (first 500 chars):\n');
+    console.log('─'.repeat(60));
+    console.log(result.summary.substring(0, 500) + '...\n');
+    console.log('─'.repeat(60));
+    console.log(`\nOpen full summary: open "${summaryPath}"\n`);
+  }
 }
 
 async function searchBook(query) {
@@ -174,7 +239,7 @@ async function searchBook(query) {
   });
 }
 
-async function searchAndDownload(query) {
+async function searchAndDownload(query, options = {}) {
   console.log('📚 Book Finder Mode\n');
 
   // Import book finder
@@ -208,7 +273,7 @@ async function searchAndDownload(query) {
   console.log(`✓ Downloaded to: ${filePath}\n`);
 
   // Process the file
-  await processFile(filePath);
+  await processFile(filePath, options);
 }
 
 async function showStatus(jobId) {
@@ -319,7 +384,7 @@ async function openAudiobook(jobId) {
   if (jobId === true || !jobId) {
     // Open audiobooks directory
     const audiobooksDir = config.paths.audiobooks;
-    await execAsync(`open "${audiobooksDir}"`);
+    await execFileAsync('open', [audiobooksDir]);
     console.log(`Opened: ${audiobooksDir}\n`);
   } else {
     // Open specific job
@@ -337,7 +402,7 @@ async function openAudiobook(jobId) {
       return;
     }
 
-    await execAsync(`open "${job.output_dir}"`);
+    await execFileAsync('open', [job.output_dir]);
     console.log(`Opened: ${job.output_dir}\n`);
   }
 
@@ -386,7 +451,7 @@ async function startWorker() {
 
 const configCmd = program
   .command('config')
-  .description('Manage PodMe configuration');
+  .description('Manage Voicci configuration');
 
 // Show current configuration
 configCmd
@@ -396,7 +461,7 @@ configCmd
     await configManager.init();
     const summary = configManager.getSummary();
 
-    console.log('\n📊 PodMe Configuration\n');
+    console.log('\n📊 Voicci Configuration\n');
     console.log('═'.repeat(60));
 
     // System info
@@ -455,7 +520,7 @@ configCmd
     } catch (error) {
       console.error('Error:', error.message);
       console.log('\nValid profiles: low, medium, high');
-      console.log('Run "podme config profiles" to see details\n');
+      console.log('Run "voicci config profiles" to see details\n');
       process.exit(1);
     }
   });
@@ -477,7 +542,7 @@ configCmd
     } catch (error) {
       console.error('Error:', error.message);
       console.log('\nValid presets: fast, balanced, best');
-      console.log('Run "podme config presets" to see details\n');
+      console.log('Run "voicci config presets" to see details\n');
       process.exit(1);
     }
   });
@@ -545,7 +610,7 @@ configCmd
     });
 
     console.log('\n═'.repeat(60));
-    console.log('Set with: podme config set-profile <profile>\n');
+    console.log('Set with: voicci config set-profile <profile>\n');
   });
 
 // List available presets
@@ -566,7 +631,7 @@ configCmd
     });
 
     console.log('\n═'.repeat(60));
-    console.log('Set with: podme config set-quality <preset>\n');
+    console.log('Set with: voicci config set-quality <preset>\n');
   });
 
 // Reset configuration
@@ -582,6 +647,27 @@ configCmd
     console.log('Current profile:', summary.current.memoryProfile.name);
     console.log('Current quality:', summary.current.qualityPreset.name);
     console.log();
+  });
+
+// ============================================================================
+// Summary Command
+// ============================================================================
+
+program
+  .command('summary <file>')
+  .description('Generate analytical text summary (2-5% of original length)')
+  .action(async (file) => {
+    try {
+      if (!fs.existsSync(file)) {
+        console.error(`Error: File not found: ${file}\n`);
+        process.exit(1);
+      }
+
+      await processFile(file, { summary: true });
+    } catch (error) {
+      console.error('Error:', error.message);
+      process.exit(1);
+    }
   });
 
 // ============================================================================

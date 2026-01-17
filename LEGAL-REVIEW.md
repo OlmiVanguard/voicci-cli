@@ -1,14 +1,14 @@
-# PodMe - Legal & Liability Review
+# Voicci - Legal & Liability Review
 
 ## ✅ Safety Assessment
 
-### What PodMe Is
+### What Voicci Is
 - **Open-source CLI tool** (MIT License)
 - **100% local processing** - No cloud, no APIs, no servers
 - **User-controlled** - Runs on user's hardware with user's models
 - **Text-to-speech converter** - Transforms text files to audio
 
-### What PodMe Is NOT
+### What Voicci Is NOT
 - ❌ Not a book distribution service
 - ❌ Not a hosting platform
 - ❌ No central servers or APIs
@@ -54,9 +54,9 @@
 **Risk**: `lib/book-finder.js` searches LibGen, Anna's Archive for copyrighted books
 
 **Legal Status**:
-- PodMe **does not host** any copyrighted content
-- PodMe **does not distribute** any copyrighted content
-- PodMe is a **search tool** (like Google)
+- Voicci **does not host** any copyrighted content
+- Voicci **does not distribute** any copyrighted content
+- Voicci is a **search tool** (like Google)
 - Users are responsible for their downloads
 - Torrenting/downloading is user's action, not Voicci's
 
@@ -71,7 +71,7 @@
 > 2. The tool does not host/distribute content
 > 3. Users control what content they access
 
-**PodMe's Non-Infringing Uses**:
+**Voicci's Non-Infringing Uses**:
 - Converting personal documents (legal)
 - Converting public domain books (legal)
 - Converting academic papers (often legal under fair use)
@@ -84,20 +84,20 @@
 
 ### 1. Clear Terms of Service
 ```
-By using PodMe, you agree:
+By using Voicci, you agree:
 - You are responsible for compliance with copyright laws
 - You will only process content you have rights to
-- You will not use PodMe to infringe on copyrights
-- Voicci provides PodMe "as-is" with no warranties
+- You will not use Voicci to infringe on copyrights
+- Voicci provides Voicci "as-is" with no warranties
 - You indemnify Voicci for your use of the software
 ```
 
 ### 2. Prominent Disclaimers on Website
 ```
 ⚠️ COPYRIGHT NOTICE
-PodMe is a tool for converting text to speech. Users are responsible
+Voicci is a tool for converting text to speech. Users are responsible
 for ensuring they have the legal right to process any content.
-Do not use PodMe to infringe on copyrights.
+Do not use Voicci to infringe on copyrights.
 ```
 
 ### 3. Remove Book Search from Default Install (Optional)
@@ -105,10 +105,10 @@ Do not use PodMe to infringe on copyrights.
 
 ```bash
 # Default install: Text-to-speech only
-npm install -g podme
+npm install -g voicci
 
 # Advanced install: Include book search
-npm install -g podme --with-book-search
+npm install -g voicci --with-book-search
 ```
 
 **Or**: Keep book search but add explicit warning when used:
@@ -134,11 +134,11 @@ Some countries have stricter copyright laws:
 
 ## 📄 Recommended Landing Page Structure
 
-### voicci.com/podme
+### voicci.com/voicci-cli
 
 ```
 ┌─────────────────────────────────────────────┐
-│  🎧 PodMe - AI Audiobook Generator          │
+│  🎧 Voicci - AI Audiobook Generator          │
 │  Transform text files into high-quality     │
 │  audiobooks using local AI models           │
 │                                             │
@@ -150,7 +150,7 @@ Some countries have stricter copyright laws:
 
 Before installing, please read:
 
-✓ WHAT PODME IS
+✓ WHAT VOICCI IS
   • Open-source text-to-speech converter
   • Runs 100% locally on your computer
   • No cloud services, no data collection
@@ -170,13 +170,13 @@ Before installing, please read:
 
 ✓ YOUR RESPONSIBILITY
   ⚠️ You are responsible for ensuring you have the legal
-     right to process any content you use with PodMe.
+     right to process any content you use with Voicci.
 
-  ⚠️ Do not use PodMe to infringe on copyrights.
+  ⚠️ Do not use Voicci to infringe on copyrights.
 
-  ⚠️ Voicci provides PodMe "as-is" with no warranties.
+  ⚠️ Voicci provides Voicci "as-is" with no warranties.
 
-  ⚠️ By using PodMe, you agree to our Terms of Service.
+  ⚠️ By using Voicci, you agree to our Terms of Service.
 
 ✓ WHAT VOICCI DOES NOT DO
   • We do not host or distribute books
@@ -186,7 +186,7 @@ Before installing, please read:
 
 [ ] I understand and agree to the Terms of Service
 
-[Install PodMe]
+[Install Voicci]
 ```
 
 ---
@@ -194,16 +194,16 @@ Before installing, please read:
 ## 📋 Terms of Service (Short Version)
 
 ```markdown
-# PodMe Terms of Service
+# Voicci Terms of Service
 
 Last Updated: 2026-01-17
 
 ## 1. Acceptance of Terms
-By downloading, installing, or using PodMe, you agree to these terms.
+By downloading, installing, or using Voicci, you agree to these terms.
 
 ## 2. Description of Service
-PodMe is an open-source command-line tool that converts text files
-to audio using AI text-to-speech technology. PodMe runs entirely on
+Voicci is an open-source command-line tool that converts text files
+to audio using AI text-to-speech technology. Voicci runs entirely on
 your local computer.
 
 ## 3. User Responsibilities
@@ -211,16 +211,16 @@ You are solely responsible for:
 - Ensuring you have legal rights to any content you process
 - Compliance with copyright laws in your jurisdiction
 - Your use of any optional features (e.g., content search)
-- Any consequences of your use of PodMe
+- Any consequences of your use of Voicci
 
 ## 4. Prohibited Uses
-You may not use PodMe to:
+You may not use Voicci to:
 - Infringe on copyrights or intellectual property rights
 - Violate any applicable laws or regulations
 - Distribute copyrighted content without authorization
 
 ## 5. No Warranties
-PodMe is provided "AS-IS" without any warranties, express or implied.
+Voicci is provided "AS-IS" without any warranties, express or implied.
 Voicci makes no guarantees about:
 - Functionality or performance
 - Accuracy of generated audio
@@ -229,16 +229,16 @@ Voicci makes no guarantees about:
 
 ## 6. Limitation of Liability
 To the maximum extent permitted by law:
-- Voicci is not liable for your use of PodMe
+- Voicci is not liable for your use of Voicci
 - Voicci is not liable for any content you process
 - Voicci is not responsible for third-party content sources
 - You indemnify Voicci against claims arising from your use
 
 ## 7. Open Source License
-PodMe is licensed under the MIT License. See LICENSE file for details.
+Voicci is licensed under the MIT License. See LICENSE file for details.
 
 ## 8. Third-Party Services
-PodMe may provide tools to search for content on third-party websites.
+Voicci may provide tools to search for content on third-party websites.
 Voicci does not control, endorse, or take responsibility for these
 third-party services or the content available through them.
 
@@ -258,21 +258,21 @@ For questions: support@voicci.com
 ## 🎯 Recommended Approach
 
 ### Conservative (Lowest Risk)
-1. ✅ Host on voicci.com/podme
+1. ✅ Host on voicci.com/voicci-cli
 2. ✅ Prominent legal disclaimers
 3. ✅ Clear Terms of Service
 4. ⚠️ **Remove book search feature** from default install
 5. ✅ Make it opt-in for advanced users
 
 ### Moderate (Balanced)
-1. ✅ Host on voicci.com/podme
+1. ✅ Host on voicci.com/voicci-cli
 2. ✅ Prominent legal disclaimers
 3. ✅ Clear Terms of Service
 4. ✅ Keep book search but add warning dialog
 5. ✅ Require explicit consent before searching
 
 ### Liberal (Higher Risk but Common)
-1. ✅ Host on voicci.com/podme
+1. ✅ Host on voicci.com/voicci-cli
 2. ✅ Standard legal disclaimers
 3. ✅ Terms of Service
 4. ✅ Book search included (like YouTube-DL)
@@ -313,7 +313,7 @@ For questions: support@voicci.com
 
 ## 🎬 Next Steps
 
-1. **Create landing page** at voicci.com/podme
+1. **Create landing page** at voicci.com/voicci-cli
 2. **Add copyright warning** to book search feature
 3. **Publish Terms of Service**
 4. **Host installer script**
@@ -323,7 +323,7 @@ For questions: support@voicci.com
 
 ## 💼 Legal Opinion (Not Legal Advice)
 
-**Bottom Line**: PodMe is similar to tools like YouTube-DL, Calibre, and
+**Bottom Line**: Voicci is similar to tools like YouTube-DL, Calibre, and
 FFmpeg. These tools have substantial non-infringing uses and do not host
 or distribute content. With proper disclaimers and user responsibility
 clauses, liability risk is **low to moderate**.
@@ -344,13 +344,13 @@ Consult a lawyer if:
 - You receive DMCA takedown notice
 - User reports copyright infringement
 - Scaling to 10K+ users
-- Monetizing PodMe (ads, premium features)
+- Monetizing Voicci (ads, premium features)
 - Expanding to other jurisdictions
 
 Otherwise: Standard disclaimers are sufficient for open-source tool.
 
 ---
 
-**Status**: ✅ PodMe can be safely hosted with proper disclaimers
+**Status**: ✅ Voicci can be safely hosted with proper disclaimers
 **Risk Level**: 🟡 Low-Moderate (similar to YouTube-DL)
 **Recommended Action**: Add Terms of Service + Copyright warnings

@@ -1,4 +1,4 @@
-# PodMe Deployment to voicci.com/podme
+# Voicci Deployment to voicci.com/voicci-cli
 
 ## ✅ Legal Safety Confirmed
 
@@ -17,7 +17,7 @@
 
 ### 1. Landing Page
 **File**: `website/index.html`
-**Location**: `https://voicci.com/podme/`
+**Location**: `https://voicci.com/voicci-cli/`
 
 **Features**:
 - ✅ Full legal disclaimers
@@ -31,7 +31,7 @@
 
 ### 2. Installation Script
 **File**: `website/install.sh`
-**Location**: `https://voicci.com/podme/install.sh`
+**Location**: `https://voicci.com/voicci-cli/install.sh`
 
 **Features**:
 - ✅ System compatibility checks
@@ -43,7 +43,7 @@
 
 ### 3. Source Code
 **Location**: GitHub (public repo)
-**URL**: `https://github.com/voicci/podme`
+**URL**: `https://github.com/voicci/voicci-cli`
 
 **Required**:
 - Push current codebase to GitHub
@@ -57,13 +57,13 @@
 ### Step 1: Push to GitHub (5 mins)
 
 ```bash
-cd /Users/danielmatthews-ferrero/Documents/local-codebases/Voicci/podme
+cd /Users/danielmatthews-ferrero/Documents/local-codebases/Voicci/voicci
 
 # Create GitHub repo first (via web UI or CLI)
-gh repo create voicci/podme --public
+gh repo create voicci/voicci --public
 
 # Add remote
-git remote add origin https://github.com/voicci/podme.git
+git remote add origin https://github.com/voicci/voicci-cli.git
 
 # Push
 git push -u origin main
@@ -74,11 +74,11 @@ git push -u origin main
 #### Option A: Static Hosting (Simple)
 ```bash
 # Copy files to your web server
-scp website/index.html user@voicci.com:/var/www/voicci.com/podme/
-scp website/install.sh user@voicci.com:/var/www/voicci.com/podme/
+scp website/index.html user@voicci.com:/var/www/voicci.com/voicci-cli/
+scp website/install.sh user@voicci.com:/var/www/voicci.com/voicci-cli/
 
 # Make install script executable
-ssh user@voicci.com "chmod +x /var/www/voicci.com/podme/install.sh"
+ssh user@voicci.com "chmod +x /var/www/voicci.com/voicci-cli/install.sh"
 ```
 
 #### Option B: Vercel/Netlify (Even Simpler)
@@ -95,7 +95,7 @@ netlify deploy --prod
 Edit `website/install.sh` line ~120:
 ```bash
 # Change from:
-git clone --depth 1 https://github.com/voicci/podme.git
+git clone --depth 1 https://github.com/voicci/voicci-cli.git
 
 # To (if you want):
 # Same, or keep GitHub as source of truth
@@ -105,10 +105,10 @@ git clone --depth 1 https://github.com/voicci/podme.git
 
 ```bash
 # Test from any machine
-curl -fsSL https://voicci.com/podme/install.sh | bash
+curl -fsSL https://voicci.com/voicci-cli/install.sh | bash
 
 # Verify warning shows
-podme "test search"  # Should show copyright warning
+voicci "test search"  # Should show copyright warning
 ```
 
 ---
@@ -138,7 +138,7 @@ podme "test search"  # Should show copyright warning
 - [x] Documentation complete
 
 ### Website
-- [ ] Deploy to voicci.com/podme
+- [ ] Deploy to voicci.com/voicci-cli
 - [ ] Test install script works
 - [ ] Test on mobile devices
 - [ ] SSL certificate active
@@ -157,7 +157,7 @@ podme "test search"  # Should show copyright warning
 
 ```
 voicci.com/
-└── podme/
+└── voicci/
     ├── index.html          # Landing page
     ├── install.sh          # Installation script
     ├── docs/               # Documentation (optional)
@@ -165,7 +165,7 @@ voicci.com/
     │   ├── config.md
     │   └── troubleshooting.md
     └── releases/           # Version downloads (optional)
-        └── podme-v1.0.0.tar.gz
+        └── voicci-v1.0.0.tar.gz
 ```
 
 ---
@@ -189,7 +189,7 @@ voicci.com/
 ## 🔒 What Protects You
 
 ### 1. No Central Infrastructure
-- PodMe doesn't use any Voicci servers
+- Voicci doesn't use any Voicci servers
 - No APIs hosted by you
 - No user data collected
 - Can't be held liable for processing you don't do
@@ -252,7 +252,7 @@ OTHER LIABILITY...
 
 ### DMCA Takedown (unlikely)
 **Response**:
-1. PodMe doesn't host content
+1. Voicci doesn't host content
 2. Point to third-party sources
 3. Tool has non-infringing uses
 4. Remove search feature if required (keep core TTS)
@@ -317,7 +317,7 @@ OTHER LIABILITY...
 
 ### Today (30 minutes)
 1. Push code to GitHub
-2. Deploy landing page to voicci.com/podme
+2. Deploy landing page to voicci.com/voicci-cli
 3. Test installation flow
 4. Share with close contacts
 
@@ -340,7 +340,7 @@ OTHER LIABILITY...
 ### User Questions
 - **GitHub Issues**: Technical problems
 - **Email**: support@voicci.com (legal/general)
-- **Documentation**: voicci.com/podme/docs
+- **Documentation**: voicci.com/voicci-cli/docs
 
 ### Legal Inquiries
 - Refer to Terms of Service
@@ -361,7 +361,7 @@ OTHER LIABILITY...
 - ✅ MIT License
 - ✅ Terms of Service
 
-**Next Step**: Deploy to voicci.com/podme
+**Next Step**: Deploy to voicci.com/voicci-cli
 
 ---
 
@@ -369,20 +369,20 @@ OTHER LIABILITY...
 
 ```bash
 # 1. Push to GitHub
-cd /Users/danielmatthews-ferrero/Documents/local-codebases/Voicci/podme
-gh repo create voicci/podme --public
+cd /Users/danielmatthews-ferrero/Documents/local-codebases/Voicci/voicci
+gh repo create voicci/voicci --public
 git push -u origin main
 
 # 2. Deploy website (choose one)
 # Option A: SCP to your server
-scp website/* user@voicci.com:/var/www/voicci.com/podme/
+scp website/* user@voicci.com:/var/www/voicci.com/voicci-cli/
 
 # Option B: Vercel
 cd website && vercel deploy --prod
 
 # 3. Test
-curl https://voicci.com/podme/install.sh | head -20
-curl -fsSL https://voicci.com/podme/install.sh | bash
+curl https://voicci.com/voicci-cli/install.sh | head -20
+curl -fsSL https://voicci.com/voicci-cli/install.sh | bash
 
 # Done!
 ```
@@ -395,4 +395,4 @@ All legal protections are in place. You're following industry standards (YouTube
 
 **Risk Level**: 🟡 Low-Moderate (acceptable for open-source tool)
 
-**Recommendation**: Deploy to voicci.com/podme today!
+**Recommendation**: Deploy to voicci.com/voicci-cli today!

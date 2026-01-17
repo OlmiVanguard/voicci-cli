@@ -1,4 +1,4 @@
-# PodMe Development Status
+# Voicci Development Status
 
 ## ✅ Completed
 
@@ -13,7 +13,7 @@
 - ✅ Book finder with multi-source search
 - ✅ Package.json with dependencies
 - ✅ Installation script
-- ✅ Web landing page (podme.html)
+- ✅ Web landing page (voicci.html)
 - ✅ Comprehensive README
 - ✅ Test files and sample data
 
@@ -38,7 +38,7 @@
 - ⏳ Worker process stability testing
 
 ### Claude Code Integration (0%)
-- ⏳ Create `/podme` slash command
+- ⏳ Create `/voicci` slash command
 - ⏳ MCP server configuration
 - ⏳ Skill manifest and documentation
 
@@ -54,8 +54,8 @@
 
 ### Deployment
 - ⬜ Push to GitHub repository
-- ⬜ Deploy installer script to voicci.com/podme/install.sh
-- ⬜ Deploy landing page to voicci.com/podme
+- ⬜ Deploy installer script to voicci.com/voicci-cli/install.sh
+- ⬜ Deploy landing page to voicci.com/voicci-cli
 - ⬜ Test installation on clean machine
 - ⬜ Verify all dependencies auto-install
 

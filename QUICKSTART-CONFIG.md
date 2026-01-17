@@ -1,8 +1,8 @@
-# PodMe Configuration Quick Start
+# Voicci Configuration Quick Start
 
 ## What's New?
 
-PodMe now features a smart configuration system that automatically optimizes settings based on your hardware:
+Voicci now features a smart configuration system that automatically optimizes settings based on your hardware:
 
 - 🎯 **Auto-detection**: Detects your RAM and sets optimal profile
 - 💾 **Memory profiles**: Low (2-4GB), Medium (4-8GB), High (8GB+)
@@ -14,23 +14,23 @@ PodMe now features a smart configuration system that automatically optimizes set
 
 ```bash
 # View your current configuration
-podme config show
+voicci config show
 
 # Change memory profile
-podme config set-profile high
+voicci config set-profile high
 
 # Change quality preset
-podme config set-quality best
+voicci config set-quality best
 
 # Enable/disable memory monitoring
-podme config set-monitoring on
-podme config set-monitoring off
+voicci config set-monitoring on
+voicci config set-monitoring off
 
 # Get recommendations for your system
-podme config recommend
+voicci config recommend
 
 # Check current memory status
-podme memory
+voicci memory
 ```
 
 ## Memory Profiles Explained
@@ -63,15 +63,15 @@ Memory monitoring is automatically:
 
 You can manually override:
 ```bash
-podme config set-monitoring on   # Enable
-podme config set-monitoring off  # Disable
+voicci config set-monitoring on   # Enable
+voicci config set-monitoring off  # Disable
 ```
 
 ## Configuration File
 
 Your settings are stored in:
 ```
-~/.config/podme/settings.json
+~/.config/voicci/settings.json
 ```
 
 Current settings:
@@ -92,7 +92,7 @@ Current settings:
 
 Your high profile allows files up to 500MB:
 ```bash
-podme large-book.pdf
+voicci large-book.pdf
 # File size: 245.3MB (within 500MB limit)
 # Memory profile: high
 ```
@@ -100,24 +100,24 @@ podme large-book.pdf
 ### Switch to Best Quality for Final Output
 
 ```bash
-podme config set-quality best
-podme final-book.pdf
+voicci config set-quality best
+voicci final-book.pdf
 ```
 
 ### Process Multiple Books Simultaneously
 
 Your high profile allows 5 concurrent jobs:
 ```bash
-podme book1.pdf  # Job 1 starts
-podme book2.pdf  # Job 2 starts
-podme book3.pdf  # Job 3 starts
+voicci book1.pdf  # Job 1 starts
+voicci book2.pdf  # Job 2 starts
+voicci book3.pdf  # Job 3 starts
 # All process simultaneously!
 ```
 
 ### Monitor System Load
 
 ```bash
-podme memory
+voicci memory
 # Shows real-time memory usage and status
 ```
 
@@ -131,7 +131,7 @@ podme memory
 
 **Solution**: Your file exceeds the current profile limit. Switch to high profile:
 ```bash
-podme config set-profile high
+voicci config set-profile high
 ```
 
 ### Memory Warnings
@@ -139,22 +139,22 @@ podme config set-profile high
 If you see memory warnings during processing:
 ```bash
 # Enable monitoring for recommendations
-podme config set-monitoring on
+voicci config set-monitoring on
 
 # Or switch to a lower profile
-podme config set-profile medium
+voicci config set-profile medium
 ```
 
 ### Reset to Defaults
 
 If something goes wrong:
 ```bash
-podme config reset
+voicci config reset
 ```
 
 ## Advanced: Custom Settings
 
-You can manually edit `~/.config/podme/settings.json` to override specific TTS parameters:
+You can manually edit `~/.config/voicci/settings.json` to override specific TTS parameters:
 
 ```json
 {
@@ -178,10 +178,10 @@ You can manually edit `~/.config/podme/settings.json` to override specific TTS p
 
 ```bash
 # View all config commands
-podme config --help
+voicci config --help
 
 # View specific command help
-podme config set-profile --help
+voicci config set-profile --help
 ```
 
 ---

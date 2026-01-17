@@ -1,4 +1,4 @@
-# PodMe - Project Completion Summary
+# Voicci - Project Completion Summary
 
 **Date**: 2026-01-17
 **Session**: Ralph Loop Iteration 1
@@ -10,13 +10,13 @@
 
 ### Core System: AI Audiobook Generator with Smart Book Search
 
-**PodMe** is a complete, production-ready system that converts books into audiobooks using XTTS v2 AI. The innovative feature is that users can **just name a book** instead of providing file paths - PodMe searches, downloads, and converts automatically.
+**Voicci** is a complete, production-ready system that converts books into audiobooks using XTTS v2 AI. The innovative feature is that users can **just name a book** instead of providing file paths - Voicci searches, downloads, and converts automatically.
 
 ```bash
 # Revolutionary simplicity:
-podme "The Great Gatsby"          # That's it!
-podme "1984 by George Orwell"
-podme "Attention Is All You Need"  # Academic papers too
+voicci "The Great Gatsby"          # That's it!
+voicci "1984 by George Orwell"
+voicci "Attention Is All You Need"  # Academic papers too
 ```
 
 ---
@@ -39,8 +39,8 @@ podme "Attention Is All You Need"  # Academic papers too
 - ✅ **backend/worker.js** - Detached job processor
 
 ### 4. Web Interface (2 files)
-- ✅ **public/podme.html** - Beautiful landing page
-- ✅ **public/podme/install.sh** - One-line installer
+- ✅ **public/voicci.html** - Beautiful landing page
+- ✅ **public/voicci/install.sh** - One-line installer
 
 ### 5. Configuration (2 files)
 - ✅ **package.json** - Node.js dependencies
@@ -191,12 +191,12 @@ TOC removal: ✅ Working
 1. Verify XTTS v2 model downloads correctly
 2. Test full audio generation pipeline
 3. Fix any bugs discovered
-4. Create Claude Code skill (`/podme`)
+4. Create Claude Code skill (`/voicci`)
 
 ### Deployment
 1. Push to GitHub repository
-2. Deploy installer to `voicci.com/podme/install.sh`
-3. Deploy landing page to `voicci.com/podme`
+2. Deploy installer to `voicci.com/voicci-cli/install.sh`
+3. Deploy landing page to `voicci.com/voicci-cli`
 4. Announce and share!
 
 ---
@@ -293,12 +293,12 @@ TOC removal: ✅ Working
 
 ## 🎉 Project Impact
 
-### What Makes PodMe Special:
+### What Makes Voicci Special:
 
 1. **Accessibility**: Anyone can convert books to audio for free
 2. **Privacy**: No cloud services, no data collection
 3. **Quality**: XTTS v2 produces human-like natural speech
-4. **Simplicity**: Just name the book, PodMe handles everything
+4. **Simplicity**: Just name the book, Voicci handles everything
 5. **Open Source**: Free forever, fully auditable
 
 ### Potential Users:
@@ -311,7 +311,7 @@ TOC removal: ✅ Working
 
 ## 📝 Final Notes
 
-**PodMe is 95% complete and ready for end-to-end testing.**
+**Voicci is 95% complete and ready for end-to-end testing.**
 
 The foundation is solid:
 - ✅ All core code written and tested
@@ -340,7 +340,7 @@ The system is ready for its first real test. All the pieces are in place - now i
 **Next Command:**
 ```bash
 pip3 install TTS torch torchaudio
-podme "Animal Farm by George Orwell"
+voicci "Animal Farm by George Orwell"
 ```
 
 Let's make audiobooks accessible to everyone! 🎧📚

@@ -5,7 +5,7 @@
 
 ## Overview
 
-Successfully implemented a comprehensive configuration system for PodMe that:
+Successfully implemented a comprehensive configuration system for Voicci that:
 - Automatically detects system capabilities
 - Provides smart memory profiles (low/medium/high)
 - Offers quality presets (fast/balanced/best)
@@ -20,7 +20,7 @@ Successfully implemented a comprehensive configuration system for PodMe that:
 - Three memory profiles optimized for different RAM levels (2GB, 4-8GB, 8GB+)
 - Three quality presets for TTS generation
 - Automatic system detection and profile recommendation
-- XDG Base Directory compliance (`~/.config/podme/settings.json`)
+- XDG Base Directory compliance (`~/.config/voicci/settings.json`)
 - Persistent user preferences
 - Smart recommendations based on system capabilities
 
@@ -64,17 +64,17 @@ Successfully implemented a comprehensive configuration system for PodMe that:
 
 ```bash
 # Configuration management
-podme config show              # View all settings
-podme config set-profile <p>   # Set memory profile
-podme config set-quality <q>   # Set quality preset
-podme config set-monitoring <s> # Enable/disable monitoring
-podme config recommend         # Get recommendations
-podme config profiles          # List available profiles
-podme config presets           # List available presets
-podme config reset             # Reset to defaults
+voicci config show              # View all settings
+voicci config set-profile <p>   # Set memory profile
+voicci config set-quality <q>   # Set quality preset
+voicci config set-monitoring <s> # Enable/disable monitoring
+voicci config recommend         # Get recommendations
+voicci config profiles          # List available profiles
+voicci config presets           # List available presets
+voicci config reset             # Reset to defaults
 
 # Memory status
-podme memory                   # View current memory stats
+voicci memory                   # View current memory stats
 ```
 
 **File Size Validation**:
@@ -116,10 +116,10 @@ podme memory                   # View current memory stats
 ### First Run (Auto-Detection)
 
 ```bash
-$ podme mybook.pdf
+$ voicci mybook.pdf
 Auto-detected memory profile: high
 
-🎧 PodMe - Audiobook Generator
+🎧 Voicci - Audiobook Generator
 Processing: mybook.pdf
 File size: 45.2MB (within 500MB limit)
 Memory profile: high
@@ -130,8 +130,8 @@ Memory profile: high
 ### Configuration Commands
 
 ```bash
-$ podme config show
-📊 PodMe Configuration
+$ voicci config show
+📊 Voicci Configuration
 
 🖥️  SYSTEM:
   RAM: 8.0GB total, 2.1GB free
@@ -151,7 +151,7 @@ $ podme config show
 ### Smart Recommendations
 
 ```bash
-$ podme config recommend
+$ voicci config recommend
 💡 Configuration Recommendations
 
 Your configuration is optimized for your system!
@@ -160,7 +160,7 @@ Your configuration is optimized for your system!
 ### Memory Status
 
 ```bash
-$ podme memory
+$ voicci memory
 💾 Memory Status
 
 🖥️  SYSTEM MEMORY:
@@ -176,8 +176,8 @@ $ podme memory
 ### Configuration File Location
 
 Following XDG Base Directory Specification:
-- macOS: `~/Library/Application Support/podme/config/` → Migrated to `~/.config/podme/`
-- Linux: `~/.config/podme/`
+- macOS: `~/Library/Application Support/voicci/config/` → Migrated to `~/.config/voicci/`
+- Linux: `~/.config/voicci/`
 
 ### Settings Schema
 

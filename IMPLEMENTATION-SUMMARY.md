@@ -1,18 +1,18 @@
-# PodMe - Implementation Summary
+# Voicci - Implementation Summary
 
 ## 🎯 Project Overview
 
-**PodMe** is a complete AI audiobook generation system that converts PDF/text files OR searches and downloads books by name, then generates high-quality audiobooks using XTTS v2.
+**Voicci** is a complete AI audiobook generation system that converts PDF/text files OR searches and downloads books by name, then generates high-quality audiobooks using XTTS v2.
 
 ### Key Innovation: Smart Book Search
 
-Unlike typical converters that require file paths, PodMe can search and download books from multiple sources:
+Unlike typical converters that require file paths, Voicci can search and download books from multiple sources:
 
 ```bash
 # Just name the book!
-podme "The Great Gatsby"
-podme "Attention Is All You Need"  # Academic papers
-podme "1984 by George Orwell"
+voicci "The Great Gatsby"
+voicci "Attention Is All You Need"  # Academic papers
+voicci "1984 by George Orwell"
 ```
 
 ## 📦 Complete Implementation
@@ -61,13 +61,13 @@ podme "1984 by George Orwell"
 
 #### `index.js` - Command-Line Interface
 - **Commands**:
-  - `podme "book name"` - Search & convert
-  - `podme file.pdf` - Convert file
-  - `podme -s [jobId]` - Check status
-  - `podme -l` - List audiobooks
-  - `podme -o <jobId>` - Open folder
-  - `podme -d <jobId>` - Delete
-  - `podme --search "query"` - Search without downloading
+  - `voicci "book name"` - Search & convert
+  - `voicci file.pdf` - Convert file
+  - `voicci -s [jobId]` - Check status
+  - `voicci -l` - List audiobooks
+  - `voicci -o <jobId>` - Open folder
+  - `voicci -d <jobId>` - Delete
+  - `voicci --search "query"` - Search without downloading
 
 #### `progress-ui.js` - React Ink Progress UI
 - **Real-time progress bars** for overall and per-chapter
@@ -88,7 +88,7 @@ podme "1984 by George Orwell"
 
 ### 4. Web Interface (`public/`)
 
-#### `podme.html` - Landing Page
+#### `voicci.html` - Landing Page
 - Beautiful gradient design
 - Feature showcase grid
 - One-line installation command
@@ -100,7 +100,7 @@ podme "1984 by George Orwell"
 - Dependency checking (Node.js, Python, pdftotext)
 - Auto-installation of Node/Python packages
 - XTTS v2 model download (~450MB)
-- Global `podme` command setup
+- Global `voicci` command setup
 - Cross-platform (macOS/Linux)
 
 ### 5. Testing (`tests/`)
@@ -166,7 +166,7 @@ User Input ("The Great Gatsby")
 - README.md (comprehensive guide)
 - STATUS.md (development tracking)
 - IMPLEMENTATION-SUMMARY.md (this file)
-- podme.html (web landing page)
+- voicci.html (web landing page)
 
 **Tests**:
 - Text cleaner tested ✅
@@ -332,7 +332,7 @@ User Input ("The Great Gatsby")
 
 ## 🎉 What Makes This Special
 
-1. **No File Paths Needed**: Just say "podme The Great Gatsby"
+1. **No File Paths Needed**: Just say "voicci The Great Gatsby"
 2. **100% Local**: No cloud, no APIs, no tracking
 3. **Smart Cleaning**: Removes noise automatically
 4. **Beautiful UI**: Terminal progress with React Ink

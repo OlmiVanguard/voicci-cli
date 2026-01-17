@@ -1,8 +1,8 @@
-# PodMe - Production Ready Status
+# Voicci - Production Ready Status
 
 ## ✅ Hardening Complete
 
-PodMe is now production-ready with enterprise-grade security, reliability, and performance.
+Voicci is now production-ready with enterprise-grade security, reliability, and performance.
 
 ---
 
@@ -94,9 +94,9 @@ pdftotext not found. Please install poppler-utils:
 
 **Commands**:
 ```bash
-podme memory                     # Check current memory status
-podme config set-monitoring on   # Enable monitoring
-podme config set-monitoring off  # Disable monitoring
+voicci memory                     # Check current memory status
+voicci config set-monitoring on   # Enable monitoring
+voicci config set-monitoring off  # Disable monitoring
 ```
 
 ### 2. Concurrent Job Limits
@@ -125,29 +125,29 @@ podme config set-monitoring off  # Disable monitoring
   - Detects system RAM on first run
   - Auto-selects optimal profile (low/medium/high)
   - Warns if profile doesn't match hardware
-  - Recommendations via `podme config recommend`
+  - Recommendations via `voicci config recommend`
 
 ### User Control
 ```bash
 # View configuration
-podme config show
+voicci config show
 
 # Change memory profile
-podme config set-profile high
+voicci config set-profile high
 
 # Change quality preset
-podme config set-quality best
+voicci config set-quality best
 
 # View all options
-podme config profiles
-podme config presets
+voicci config profiles
+voicci config presets
 
 # Reset to defaults
-podme config reset
+voicci config reset
 ```
 
 ### Configuration File
-- **Location**: `~/.config/podme/settings.json`
+- **Location**: `~/.config/voicci/settings.json`
 - **Schema Validation**: ✅ Validates on load
 - **Graceful Fallback**: Uses defaults if corrupted
 
@@ -229,7 +229,7 @@ node tests/test-security.js
 ```bash
 # 1. Clone repository
 git clone <repo-url>
-cd podme
+cd voicci
 
 # 2. Install Node dependencies
 npm install
@@ -245,21 +245,21 @@ sudo apt-get install poppler-utils  # Linux
 npm link
 
 # 6. Verify installation
-podme config show
-podme memory
+voicci config show
+voicci memory
 ```
 
 ### First Run
 ```bash
 # Initialize configuration (auto-detects system)
-podme config show
+voicci config show
 
 # Optionally adjust settings
-podme config set-profile medium
-podme config set-quality balanced
+voicci config set-profile medium
+voicci config set-quality balanced
 
 # Test with small file
-podme test.txt  # or test.pdf
+voicci test.txt  # or test.pdf
 ```
 
 ---
@@ -267,8 +267,8 @@ podme test.txt  # or test.pdf
 ## Monitoring & Logging
 
 ### Logs Location
-- **Worker**: `~/Library/Application Support/podme/logs/worker.log` (macOS)
-- **Worker**: `~/.local/share/podme/logs/worker.log` (Linux)
+- **Worker**: `~/Library/Application Support/voicci/logs/worker.log` (macOS)
+- **Worker**: `~/.local/share/voicci/logs/worker.log` (Linux)
 
 ### Log Format
 ```
@@ -283,13 +283,13 @@ podme test.txt  # or test.pdf
 ### Health Checks
 ```bash
 # Check memory status
-podme memory
+voicci memory
 
 # Check job status
-podme -s
+voicci -s
 
 # View logs
-tail -f ~/Library/Application\ Support/podme/logs/worker.log
+tail -f ~/Library/Application\ Support/voicci/logs/worker.log
 ```
 
 ---
@@ -312,23 +312,23 @@ pip3 install --upgrade TTS torch torchaudio
 **3. Memory warnings**
 ```bash
 # Switch to lower profile
-podme config set-profile medium
+voicci config set-profile medium
 
 # Enable memory monitoring
-podme config set-monitoring on
+voicci config set-monitoring on
 
 # Check current usage
-podme memory
+voicci memory
 ```
 
 **4. Jobs failing**
 ```bash
 # Check worker logs
-tail -f ~/Library/Application\ Support/podme/logs/worker.log
+tail -f ~/Library/Application\ Support/voicci/logs/worker.log
 
 # Restart worker
 pkill -f "node.*worker.js"
-podme <file>  # Automatically starts worker
+voicci <file>  # Automatically starts worker
 ```
 
 ---

@@ -1,10 +1,11 @@
-# 🎧 PodMe - AI Audiobook Generator
+# 🎧 Voicci CLI - AI Audiobook Generator
 
-Transform books, papers, and documents into high-quality audiobooks using XTTS v2 AI.
+Command-line tool to transform books, papers, and documents into high-quality audiobooks using XTTS v2 AI.
 
 ## Features
 
 - **📚 Smart Book Search** - Find and download books by name (no file paths needed)
+- **📝 AI Summarization** - Generate analytical summaries at 2-5% of original length
 - **🎯 Natural Voice** - XTTS v2 generates human-like speech with emotion
 - **📖 PDF & Text Support** - Intelligent text extraction with auto-cleaning
 - **🧹 Smart Cleaning** - Removes page numbers, headers, footers, TOC
@@ -23,15 +24,15 @@ Transform books, papers, and documents into high-quality audiobooks using XTTS v
 ### One-Line Install
 
 ```bash
-curl -fsSL https://voicci.com/podme/install.sh | bash
+curl -fsSL https://voicci.com/voicci-cli/install.sh | bash
 ```
 
 ### Manual Install
 
 ```bash
 # Clone or download
-git clone https://github.com/yourusername/podme.git
-cd podme
+git clone https://github.com/voicci/voicci-cli.git
+cd voicci-cli
 
 # Install dependencies
 npm install
@@ -50,76 +51,97 @@ chmod +x cli/index.js
 ### Convert by Book Name (Recommended)
 
 ```bash
-# Just name the book - PodMe finds and downloads it
-podme "The Great Gatsby"
-podme "Attention Is All You Need"  # Academic papers too!
-podme "1984 by George Orwell"
+# Just name the book - Voicci finds and downloads it
+voicci "The Great Gatsby"
+voicci "Attention Is All You Need"  # Academic papers too!
+voicci "1984 by George Orwell"
 ```
 
 ### Convert from File
 
 ```bash
 # PDF or TXT file
-podme mybook.pdf
-podme story.txt
+voicci mybook.pdf
+voicci story.txt
 ```
 
 ### Search Without Downloading
 
 ```bash
 # Preview search results before downloading
-podme --search "The Catcher in the Rye"
+voicci --search "The Catcher in the Rye"
 ```
+
+### Generate Summaries
+
+```bash
+# Generate analytical summary only (no audio)
+voicci summary mybook.pdf
+voicci --summary "The Great Gatsby"
+
+# Generate both audiobook AND summary
+voicci --with-summary mybook.pdf
+voicci --with-summary "1984"
+```
+
+**Summary Features**:
+- Analytical style with clear, non-specialized vocabulary
+- Retains specificity (key details, names, numbers, facts)
+- Adaptive length: 2-5% of original word count depending on document size
+- Three backends: Ollama (local LLM), Python AI, or extractive fallback
+- Saves summary as text file with statistics
 
 ### Monitor Progress
 
 ```bash
 # Live progress UI with chapter status
-podme -s <jobId>
+voicci -s <jobId>
 
 # List all jobs
-podme -s
+voicci -s
 ```
 
 ### Manage Audiobooks
 
 ```bash
 # List completed audiobooks
-podme -l
+voicci -l
 
 # Open audiobook folder
-podme -o <jobId>
+voicci -o <jobId>
 
 # Delete audiobook
-podme -d <jobId>
+voicci -d <jobId>
 
 # Cancel running job
-podme --cancel <jobId>
+voicci --cancel <jobId>
 ```
 
 ### Configuration
 
 ```bash
 # View current configuration
-podme config show
+voicci config show
 
 # Set memory profile (low, medium, high)
-podme config set-profile high
+voicci config set-profile high
 
 # Set quality preset (fast, balanced, best)
-podme config set-quality balanced
+voicci config set-quality balanced
 
 # Toggle memory monitoring
-podme config set-monitoring on
+voicci config set-monitoring on
 
 # View system recommendations
-podme config recommend
+voicci config recommend
 
 # Check memory status
-podme memory
+voicci memory
 ```
 
 ## How It Works
+
+### Audiobook Generation
 
 1. **Search & Download** - Finds book from LibGen, Anna's Archive, or other sources
 2. **Text Extraction** - Extracts clean text from PDF or reads text file
@@ -130,9 +152,17 @@ podme memory
 7. **Background Processing** - Runs independently with persistent queue
 8. **Progress Tracking** - Real-time CLI UI shows status
 
+### Summary Generation
+
+1. **Text Extraction** - Same extraction and cleaning as audiobook generation
+2. **Length Calculation** - Determines target word count (2-5% based on document size)
+3. **AI Processing** - Uses Ollama (local LLM), Python AI, or extractive summarization
+4. **Quality Assurance** - Ensures analytical style with clear language
+5. **Output** - Saves summary as text file with statistics and metadata
+
 ## Book Sources
 
-PodMe searches multiple sources automatically:
+Voicci searches multiple sources automatically:
 
 1. **Library Genesis** - Largest collection of academic books
 2. **Anna's Archive** - Comprehensive shadow library
@@ -144,21 +174,21 @@ All sources are accessed via scripted HTTP requests (no APIs, no credentials).
 
 ### macOS
 
-- Audiobooks: `~/Library/Application Support/podme/audiobooks/`
-- Config: `~/Library/Application Support/podme/config/`
-- Cache: `~/Library/Caches/podme/`
-- Logs: `~/Library/Application Support/podme/logs/`
+- Audiobooks: `~/Library/Application Support/voicci/audiobooks/`
+- Config: `~/Library/Application Support/voicci/config/`
+- Cache: `~/Library/Caches/voicci/`
+- Logs: `~/Library/Application Support/voicci/logs/`
 
 ### Linux
 
-- Audiobooks: `~/.local/share/podme/audiobooks/`
-- Config: `~/.config/podme/`
-- Cache: `~/.cache/podme/`
-- Logs: `~/.local/share/podme/logs/`
+- Audiobooks: `~/.local/share/voicci/audiobooks/`
+- Config: `~/.config/voicci/`
+- Cache: `~/.cache/voicci/`
+- Logs: `~/.local/share/voicci/logs/`
 
 ## System Requirements
 
-PodMe automatically detects your system capabilities and configures itself optimally.
+Voicci automatically detects your system capabilities and configures itself optimally.
 
 ### Minimum (Low Profile)
 - **RAM**: 2GB
@@ -196,7 +226,7 @@ Jobs run in the background so you can continue working.
 
 ## Configuration System
 
-PodMe features a smart configuration system that automatically optimizes settings based on your hardware.
+Voicci features a smart configuration system that automatically optimizes settings based on your hardware.
 
 ### Memory Profiles
 
@@ -208,10 +238,10 @@ PodMe features a smart configuration system that automatically optimizes setting
 
 ```bash
 # View available profiles
-podme config profiles
+voicci config profiles
 
 # Switch profile
-podme config set-profile medium
+voicci config set-profile medium
 ```
 
 ### Quality Presets
@@ -224,10 +254,10 @@ podme config set-profile medium
 
 ```bash
 # View available presets
-podme config presets
+voicci config presets
 
 # Switch preset
-podme config set-quality best
+voicci config set-quality best
 ```
 
 ### Memory Monitoring
@@ -239,18 +269,18 @@ Optional monitoring that warns when memory usage is high:
 
 ```bash
 # Enable monitoring
-podme config set-monitoring on
+voicci config set-monitoring on
 
 # Disable monitoring
-podme config set-monitoring off
+voicci config set-monitoring off
 
 # Check current status
-podme memory
+voicci memory
 ```
 
 ### Configuration File
 
-Settings are stored in `~/.config/podme/settings.json` (XDG Base Directory compliant):
+Settings are stored in `~/.config/voicci/settings.json` (XDG Base Directory compliant):
 
 ```json
 {
@@ -299,7 +329,7 @@ Requires macOS 12+ on Apple Silicon. Falls back to CPU if unavailable.
 Sources may be temporarily unavailable. Try:
 
 1. Different book title or author name
-2. Using file path directly: `podme mybook.pdf`
+2. Using file path directly: `voicci mybook.pdf`
 3. Checking internet connection
 
 ## Development
@@ -315,25 +345,31 @@ npm run worker
 node tests/test-cleaner.js
 
 # Check queue status
-sqlite3 ~/Library/Application\ Support/podme/queue.db "SELECT * FROM jobs;"
+sqlite3 ~/Library/Application\ Support/voicci/queue.db "SELECT * FROM jobs;"
 ```
 
 ## Architecture
 
 ```
-podme/
+voicci/
 ├── cli/              # Command-line interface
 │   ├── index.js      # Main CLI commands
 │   └── progress-ui.js # React Ink progress UI
 ├── lib/              # Core libraries
 │   ├── config.js     # Configuration & paths
+│   ├── config-manager.js # Smart configuration system
 │   ├── text-cleaner.js # PDF/text extraction & cleaning
+│   ├── summarizer.js # AI text summarization
 │   ├── tts-engine.py  # XTTS v2 wrapper
 │   ├── queue.js      # SQLite job queue
-│   └── book-finder.js # Multi-source book search
+│   ├── book-finder.js # Multi-source book search
+│   ├── path-validator.js # Security: path validation
+│   └── memory-monitor.js # Optional memory monitoring
 ├── backend/          # Background processing
-│   └── worker.js     # Job processor
+│   └── worker.js     # Job processor with retry logic
 └── tests/            # Test files
+    ├── test-security.js # Security validation
+    └── test-cleaner.js  # Text cleaning tests
 ```
 
 ## Privacy & Security
@@ -357,8 +393,8 @@ MIT License - Free to use, modify, and distribute.
 
 For issues, questions, or feature requests:
 
-- GitHub: https://github.com/yourusername/podme
-- Website: https://voicci.com/podme
+- GitHub: https://github.com/voicci/voicci-cli
+- Website: https://voicci.com/voicci-cli
 - Email: support@voicci.com
 
 ---
