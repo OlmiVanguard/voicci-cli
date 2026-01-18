@@ -13,6 +13,10 @@ import Queue from '../lib/queue.js';
 import pathValidator from '../lib/path-validator.js';
 import { exec, execFile } from 'child_process';
 import { promisify } from 'util';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
 
 const execAsync = promisify(exec);
 const execFileAsync = promisify(execFile);
@@ -22,7 +26,7 @@ const program = new Command();
 program
   .name('voicci')
   .description('AI Audiobook Generator using XTTS v2')
-  .version('1.0.0');
+  .version(pkg.version);
 
 program
   .argument('[input]', 'PDF/TXT file or book/paper name to convert')
