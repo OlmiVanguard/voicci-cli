@@ -1,6 +1,8 @@
-# 🎧 Voicci CLI - AI Audiobook Generator
+# 🎧 Voicci - AI-Powered Audiobook Generator
 
-Command-line tool to transform books, papers, and documents into high-quality audiobooks using XTTS v2 AI.
+Transform books and PDFs into audiobooks using natural language with Claude Code, OpenCode, or any AI code editor.
+
+**Designed for AI Assistants** - Just tell your AI what book you want, and it handles the search, download, conversion, and summarization automatically.
 
 ## Features
 
@@ -19,34 +21,69 @@ Command-line tool to transform books, papers, and documents into high-quality au
 - **🍎 Apple Silicon** - Optimized for Metal acceleration (M1/M2/M3)
 - **🔒 100% Local** - No cloud, no tracking, no data collection
 
-## Installation
+## Quick Start
 
-### One-Line Install
+### Installation
 
+```bash
+npm install -g voicci
+```
+
+That's it! The package installs both the CLI tool and Claude Code skill automatically.
+
+### Usage with AI Code Editors
+
+#### Claude Code (Recommended)
+```
+/voicci Lord of the Rings
+/voicci search "neural networks book"
+/voicci summary mybook.pdf
+```
+
+Claude AI will:
+- Search for books intelligently
+- Handle ambiguity and pick the best match
+- Monitor conversion progress
+- Troubleshoot errors automatically
+- Guide you through summarization
+
+#### OpenCode
+```
+Find and convert "Attention Is All You Need" paper to audiobook
+```
+
+OpenCode will understand your intent and run the appropriate `voicci` commands.
+
+#### Cursor / Windsurf / Other AI Editors
+
+Simply tell your AI assistant what you want in natural language:
+- "Convert this PDF to an audiobook"
+- "Find me a book about machine learning and turn it into audio"
+- "Summarize this paper for me"
+
+The AI will intelligently use the `voicci` CLI commands to accomplish the task.
+
+## Advanced Installation
+
+### Alternative Install Methods
+
+**One-Line Install Script:**
 ```bash
 curl -fsSL https://voicci.com/voicci-cli/install.sh | bash
 ```
 
-### Manual Install
-
+**Manual Install from Source:**
 ```bash
-# Clone or download
 git clone https://github.com/voicci/voicci-cli.git
 cd voicci-cli
-
-# Install dependencies
 npm install
 pip3 install TTS torch torchaudio
-
-# Install globally
 npm link
-
-# Or run directly
-chmod +x cli/index.js
-./cli/index.js --help
 ```
 
-## Usage
+## CLI Reference (For Advanced Users)
+
+These commands are typically run by your AI assistant, but you can also use them directly:
 
 ### Convert by Book Name (Recommended)
 

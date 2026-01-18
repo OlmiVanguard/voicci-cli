@@ -1,7 +1,7 @@
 {
   "name": "voicci",
-  "version": "1.0.2",
-  "description": "Voicci CLI - AI Audiobook Generator and Text Summarizer using XTTS v2",
+  "version": "1.0.3",
+  "description": "AI-Powered Audiobook Generator for Claude Code, OpenCode & AI Code Editors. Convert books and PDFs to audiobooks using natural language.",
   "type": "module",
   "main": "cli/index.js",
   "bin": {
@@ -27,7 +27,13 @@
     "claude-code",
     "claude-skill",
     "claude",
-    "anthropic"
+    "anthropic",
+    "opencode",
+    "cursor",
+    "windsurf",
+    "ai-agent",
+    "coding-agent",
+    "ai-code-editor"
   ],
   "author": "Voicci",
   "license": "MIT",
