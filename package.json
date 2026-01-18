@@ -1,6 +1,6 @@
 {
   "name": "voicci",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Voicci CLI - AI Audiobook Generator and Text Summarizer using XTTS v2",
   "type": "module",
   "main": "cli/index.js",
@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node cli/index.js",
     "worker": "node backend/worker.js",
-    "test": "node tests/test-cleaner.js"
+    "test": "node tests/test-cleaner.js",
+    "postinstall": "node scripts/postinstall.js"
   },
   "keywords": [
     "audiobook",
@@ -22,7 +23,11 @@
     "cli",
     "pdf",
     "epub",
-    "summarization"
+    "summarization",
+    "claude-code",
+    "claude-skill",
+    "claude",
+    "anthropic"
   ],
   "author": "Voicci",
   "license": "MIT",
