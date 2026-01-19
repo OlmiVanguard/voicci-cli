@@ -4,30 +4,27 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 
-const skillContent = `#!/bin/bash
+const skillContent = `---
+description: "Voicci CLI - AI audiobook generator"
+argument-hint: "COMMAND_OR_FILE"
+---
+
 # Voicci CLI - AI Audiobook Generator
-# Auto-installed via npm package
 
-cat << 'PROMPT_EOF'
-<command-name>/voicci</command-name>
+Convert books, PDFs, and documents to audiobooks using AI-powered text-to-speech (XTTS v2).
 
-You are helping the user with the **Voicci CLI** - an AI audiobook generator and text summarizer.
-
-## What is Voicci CLI?
-A command-line tool that converts books and PDFs into audiobooks using XTTS v2 AI voice synthesis. It also provides AI text summarization.
-
-## Your Task
-Execute voicci CLI commands based on the user's request. The tool is installed locally and runs on this machine.
+## What is Voicci?
+A command-line tool that converts books and PDFs into natural-sounding audiobooks. Also provides AI text summarization.
 
 ## Common Commands
 
-**Search for a book:**
+**Search and convert a book:**
 \`\`\`bash
 voicci "Lord of the Rings"
 voicci "Attention Is All You Need"
 \`\`\`
 
-**Convert a file:**
+**Convert a local file:**
 \`\`\`bash
 voicci mybook.pdf
 voicci document.txt
@@ -38,13 +35,14 @@ voicci document.txt
 voicci --search "The Great Gatsby"
 \`\`\`
 
-**Generate summary:**
+**Generate text summary:**
 \`\`\`bash
 voicci summary mybook.pdf
 voicci --summary "1984"
+voicci --with-summary "book.pdf"  # Generate both audiobook + summary
 \`\`\`
 
-**Check status:**
+**Check job status:**
 \`\`\`bash
 voicci -s           # All jobs
 voicci -s <jobId>   # Specific job
@@ -55,6 +53,13 @@ voicci -s <jobId>   # Specific job
 voicci -l
 \`\`\`
 
+**Manage jobs:**
+\`\`\`bash
+voicci --cancel <jobId>   # Cancel running job
+voicci --delete <jobId>   # Delete audiobook
+voicci --open <jobId>     # Open audiobook folder
+\`\`\`
+
 **Configuration:**
 \`\`\`bash
 voicci config show
@@ -63,38 +68,37 @@ voicci config set-quality best
 voicci memory
 \`\`\`
 
-**Help:**
-\`\`\`bash
-voicci --help
-voicci config --help
+\`\`\`!
+#!/bin/bash
+# Execute voicci with user-provided arguments
+voicci \$ARGUMENTS
 \`\`\`
 
 ## Important Notes
 - Book downloads require copyright compliance (public domain, owned books, academic papers)
 - Processing runs in background - check status with \`voicci -s\`
-- Audiobooks saved to \`~/Library/Application Support/voicci/audiobooks/\` (macOS) or \`~/.local/share/voicci/audiobooks/\` (Linux)
+- Audiobooks saved to:
+  - macOS: \`~/Library/Application Support/voicci/audiobooks/\`
+  - Linux: \`~/.local/share/voicci/audiobooks/\`
 - Copyright warning will appear before first book search
 
-## When User Says
-- "find/search/download [book name]" → Run \`voicci "[book name]"\`
-- "convert [file]" → Run \`voicci [file]\`
-- "summarize [file]" → Run \`voicci summary [file]\`
-- "check status" → Run \`voicci -s\`
-- "list audiobooks" → Run \`voicci -l\`
-
-Execute the appropriate command now based on the user's request.
-PROMPT_EOF
+## Usage Examples
+- \`/voicci Lord of the Rings\` - Search and convert book
+- \`/voicci ~/Documents/book.pdf\` - Convert local file
+- \`/voicci -s\` - Check all job statuses
+- \`/voicci summary book.pdf\` - Generate summary only
+- \`/voicci --help\` - Show all options
 `;
 
 try {
   const homeDir = os.homedir();
-  const claudeSkillsDir = path.join(homeDir, '.claude', 'skills', 'shorthand');
+  const claudeSkillsDir = path.join(homeDir, '.claude', 'skills');
 
   // Check if .claude directory exists
   if (!fs.existsSync(path.join(homeDir, '.claude'))) {
     console.log('⚠️  Claude Code not detected (~/.claude directory not found)');
     console.log('   The voicci CLI tool is installed, but the Claude Code skill was not installed.');
-    console.log('   Install Claude Code to use /voicci as a skill.');
+    console.log('   Install Claude Code from https://claude.com/claude-code to use /voicci as a skill.');
     process.exit(0);
   }
 
@@ -103,9 +107,9 @@ try {
     fs.mkdirSync(claudeSkillsDir, { recursive: true });
   }
 
-  // Write skill file
-  const skillPath = path.join(claudeSkillsDir, 'voicci.sh');
-  fs.writeFileSync(skillPath, skillContent, { mode: 0o755 });
+  // Write skill file as .md in top-level skills directory (not shorthand/)
+  const skillPath = path.join(claudeSkillsDir, 'voicci.md');
+  fs.writeFileSync(skillPath, skillContent);
 
   console.log('✅ Voicci CLI installed successfully!');
   console.log('');
@@ -113,8 +117,8 @@ try {
   console.log('🎯 Claude Code skill: /voicci');
   console.log('');
   console.log('Try it:');
-  console.log('  $ voicci --help');
-  console.log('  $ claude');
+  console.log('  \$ voicci --help');
+  console.log('  \$ claude');
   console.log('  ❯ /voicci Lord of the Rings');
   console.log('');
   console.log('Docs: https://voicci.com/voicci-cli');
