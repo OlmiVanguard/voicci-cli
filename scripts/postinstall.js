@@ -3,8 +3,12 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { fileURLToPath } from 'url';
 
-const skillContent = `---
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const SKILL_CONTENT = `---
 description: "Voicci CLI - AI audiobook generator"
 argument-hint: "COMMAND_OR_FILE"
 ---
@@ -83,51 +87,41 @@ voicci \$ARGUMENTS
 - Copyright warning will appear before first book search
 
 ## Usage Examples
-- \`/voicci Lord of the Rings\` - Search and convert book
-- \`/voicci ~/Documents/book.pdf\` - Convert local file
-- \`/voicci -s\` - Check all job statuses
-- \`/voicci summary book.pdf\` - Generate summary only
-- \`/voicci --help\` - Show all options
+- \`/voicci-cli Lord of the Rings\` - Search and convert book
+- \`/voicci-cli ~/Documents/book.pdf\` - Convert local file
+- \`/voicci-cli -s\` - Check all job statuses
+- \`/voicci-cli summary book.pdf\` - Generate summary only
+- \`/voicci-cli --help\` - Show all options
 `;
 
-try {
-  const homeDir = os.homedir();
-  const claudeSkillsDir = path.join(homeDir, '.claude', 'skills');
+function installSkill() {
+  try {
+    const homeDir = os.homedir();
+    const skillsDir = path.join(homeDir, '.claude', 'skills');
+    const skillFile = path.join(skillsDir, 'voicci-cli.md');
 
-  // Check if .claude directory exists
-  if (!fs.existsSync(path.join(homeDir, '.claude'))) {
-    console.log('⚠️  Claude Code not detected (~/.claude directory not found)');
-    console.log('   The voicci CLI tool is installed, but the Claude Code skill was not installed.');
-    console.log('   Install Claude Code from https://claude.com/claude-code to use /voicci as a skill.');
-    process.exit(0);
+    // Create .claude/skills directory if it doesn't exist
+    if (!fs.existsSync(skillsDir)) {
+      fs.mkdirSync(skillsDir, { recursive: true });
+    }
+
+    // Write the skill file
+    fs.writeFileSync(skillFile, SKILL_CONTENT, 'utf8');
+
+    console.log('✅ Voicci CLI installed successfully!');
+    console.log('');
+    console.log('📦 Command-line tool: voicci');
+    console.log('🔧 Claude Code skill: /voicci-cli');
+    console.log('');
+    console.log('To use in Claude Code:');
+    console.log('  1. Restart your Claude Code session');
+    console.log('  2. Use: /voicci-cli "search query" or /voicci-cli mybook.pdf');
+    console.log('');
+    console.log('Or use directly: voicci "your search query"');
+  } catch (error) {
+    console.error('⚠️  Failed to install Claude Code skill:', error.message);
+    console.log('You can still use: voicci <command>');
   }
-
-  // Create skills directory if it doesn't exist
-  if (!fs.existsSync(claudeSkillsDir)) {
-    fs.mkdirSync(claudeSkillsDir, { recursive: true });
-  }
-
-  // Write skill file as .md in top-level skills directory (not shorthand/)
-  const skillPath = path.join(claudeSkillsDir, 'voicci.md');
-  fs.writeFileSync(skillPath, skillContent);
-
-  console.log('✅ Voicci CLI installed successfully!');
-  console.log('');
-  console.log('📦 Command-line tool: voicci');
-  console.log('🎯 Claude Code skill: /voicci');
-  console.log('');
-  console.log('Try it:');
-  console.log('  \$ voicci --help');
-  console.log('  \$ claude');
-  console.log('  ❯ /voicci Lord of the Rings');
-  console.log('');
-  console.log('Docs: https://voicci.com/voicci-cli');
-
-} catch (error) {
-  console.error('⚠️  Warning: Could not install Claude Code skill');
-  console.error('   Error:', error.message);
-  console.log('');
-  console.log('✅ Voicci CLI tool installed successfully!');
-  console.log('   Run: voicci --help');
-  process.exit(0);
 }
+
+installSkill();
