@@ -9,10 +9,33 @@ import { execFileSync } from 'child_process';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Use unique name to avoid conflicts with SSH shorthand skills
-const SKILL_NAME = 'voicci-audiobook.md';
+// Two skill files: simple and detailed
+const SKILL_NAME_SIMPLE = 'voicci.md';
+const SKILL_NAME_DETAILED = 'voicci-audiobook.md';
 
-const SKILL_CONTENT = `---
+const SKILL_CONTENT_SIMPLE = `---
+description: "Voicci - AI audiobook generator"
+argument-hint: "COMMAND_OR_FILE"
+---
+
+# Voicci - AI Audiobook Generator
+
+Convert books, PDFs, and documents to audiobooks using AI text-to-speech.
+
+## Quick Examples
+- \`/voicci "Lord of the Rings"\` - Search and convert book
+- \`/voicci mybook.pdf\` - Convert local file
+- \`/voicci -s\` - Check job status
+- \`/voicci -l\` - List audiobooks
+- \`/voicci --help\` - Show all options
+
+\`\`\`!
+#!/bin/bash
+voicci $ARGUMENTS
+\`\`\`
+`;
+
+const SKILL_CONTENT_DETAILED = `---
 description: "Voicci - AI audiobook generator CLI"
 argument-hint: "COMMAND_OR_FILE"
 ---
@@ -113,8 +136,7 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDir: () => path.join(os.homedir(), '.claude', 'skills'),
-    skillName: SKILL_NAME
+    skillsDir: () => path.join(os.homedir(), '.claude', 'skills')
   },
   'OpenCode': {
     name: 'OpenCode',
@@ -129,8 +151,7 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDir: () => path.join(os.homedir(), '.opencode', 'skills'),
-    skillName: SKILL_NAME
+    skillsDir: () => path.join(os.homedir(), '.opencode', 'skills')
   },
   'Cursor': {
     name: 'Cursor',
@@ -158,8 +179,7 @@ const EDITORS = {
         if (fs.existsSync(parent)) return loc;
       }
       return locations[0]; // Default to first
-    },
-    skillName: SKILL_NAME
+    }
   },
   'Windsurf': {
     name: 'Windsurf',
@@ -174,10 +194,25 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDir: () => path.join(os.homedir(), '.windsurf', 'skills'),
-    skillName: SKILL_NAME
+    skillsDir: () => path.join(os.homedir(), '.windsurf', 'skills')
   }
 };
+
+function installSkillFile(skillsDir, skillName, content) {
+  const skillFile = path.join(skillsDir, skillName);
+  
+  // Check if already installed
+  if (fs.existsSync(skillFile)) {
+    const existingContent = fs.readFileSync(skillFile, 'utf8');
+    if (existingContent.includes('voicci $ARGUMENTS')) {
+      return 'exists';
+    }
+  }
+  
+  // Write the skill file
+  fs.writeFileSync(skillFile, content, 'utf8');
+  return 'new';
+}
 
 function detectAndInstall() {
   const homeDir = os.homedir();
@@ -193,28 +228,27 @@ function detectAndInstall() {
         console.log(`✓ Found ${editor.name}`);
 
         const skillsDir = editor.skillsDir();
-        const skillFile = path.join(skillsDir, editor.skillName);
 
         // Create skills directory if it doesn't exist
         if (!fs.existsSync(skillsDir)) {
           fs.mkdirSync(skillsDir, { recursive: true });
         }
 
-        // Check for conflicts with existing files
-        if (fs.existsSync(skillFile)) {
-          const existingContent = fs.readFileSync(skillFile, 'utf8');
-          // Only skip if it's already our skill
-          if (existingContent.includes('voicci $ARGUMENTS')) {
-            console.log(`  ↳ Skill already installed at: ${skillFile}`);
-            installedEditors.push({ name: editor.name, path: skillFile, status: 'exists' });
-            continue;
-          }
-        }
+        // Install both skills
+        const simpleStatus = installSkillFile(skillsDir, SKILL_NAME_SIMPLE, SKILL_CONTENT_SIMPLE);
+        const detailedStatus = installSkillFile(skillsDir, SKILL_NAME_DETAILED, SKILL_CONTENT_DETAILED);
 
-        // Write the skill file
-        fs.writeFileSync(skillFile, SKILL_CONTENT, 'utf8');
-        console.log(`  ↳ Installed skill: ${skillFile}`);
-        installedEditors.push({ name: editor.name, path: skillFile, status: 'new' });
+        const simpleFile = path.join(skillsDir, SKILL_NAME_SIMPLE);
+        const detailedFile = path.join(skillsDir, SKILL_NAME_DETAILED);
+
+        if (simpleStatus === 'exists' && detailedStatus === 'exists') {
+          console.log(`  ↳ Skills already installed`);
+          installedEditors.push({ name: editor.name, status: 'exists' });
+        } else {
+          if (simpleStatus === 'new') console.log(`  ↳ Installed: ${simpleFile}`);
+          if (detailedStatus === 'new') console.log(`  ↳ Installed: ${detailedFile}`);
+          installedEditors.push({ name: editor.name, status: 'new' });
+        }
       }
     } catch (error) {
       failedEditors.push({ name: editor.name, error: error.message });
@@ -227,7 +261,7 @@ function detectAndInstall() {
   if (installedEditors.length > 0) {
     console.log('\n✅ Voicci CLI installed successfully!');
     console.log('\n📦 Command-line tool: voicci');
-    console.log('🔧 Skill command: /voicci-audiobook');
+    console.log('🔧 Skill commands: /voicci  OR  /voicci-audiobook');
     console.log('\n📍 Installed in:');
     installedEditors.forEach(editor => {
       const status = editor.status === 'new' ? '(new)' : '(already installed)';
@@ -236,8 +270,9 @@ function detectAndInstall() {
 
     console.log('\n💡 Usage:');
     console.log('  1. Restart your AI code editor');
-    console.log('  2. Use: /voicci-audiobook "search query"');
-    console.log('  3. Or use CLI directly: voicci "your search query"');
+    console.log('  2. Use: /voicci "search query" (simple)');
+    console.log('  3. Or: /voicci-audiobook "search query" (detailed docs)');
+    console.log('  4. Or CLI: voicci "your search query"');
   } else {
     console.log('\n⚠️  No supported AI code editors detected');
     console.log('\nSupported editors: Claude Code, OpenCode, Cursor, Windsurf');
