@@ -9,12 +9,13 @@ import { execFileSync } from 'child_process';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Two skill files: simple and detailed
-const SKILL_NAME_SIMPLE = 'voicci.md';
-const SKILL_NAME_DETAILED = 'voicci-audiobook.md';
-
-const SKILL_CONTENT_SIMPLE = `---
-description: "Voicci - AI audiobook generator"
+// Skills use directory-based format: skills/<name>/SKILL.md
+const SKILLS = [
+  {
+    dirName: 'voicci',
+    content: `---
+name: voicci
+description: "Voicci - AI audiobook generator. Use when the user wants to convert books, PDFs, or documents to audiobooks."
 argument-hint: "COMMAND_OR_FILE"
 ---
 
@@ -33,10 +34,13 @@ Convert books, PDFs, and documents to audiobooks using AI text-to-speech.
 #!/bin/bash
 voicci $ARGUMENTS
 \`\`\`
-`;
-
-const SKILL_CONTENT_DETAILED = `---
-description: "Voicci - AI audiobook generator CLI"
+`
+  },
+  {
+    dirName: 'voicci-audiobook',
+    content: `---
+name: voicci-audiobook
+description: "Voicci - AI audiobook generator with full documentation. Use when the user needs detailed help with audiobook generation."
 argument-hint: "COMMAND_OR_FILE"
 ---
 
@@ -101,7 +105,6 @@ voicci memory
 
 \`\`\`!
 #!/bin/bash
-# Execute voicci with user-provided arguments
 voicci $ARGUMENTS
 \`\`\`
 
@@ -112,14 +115,9 @@ voicci $ARGUMENTS
   - macOS: \`~/Library/Application Support/voicci/audiobooks/\`
   - Linux: \`~/.local/share/voicci/audiobooks/\`
 - Copyright warning will appear before first book search
-
-## Usage Examples
-- \`/voicci-audiobook "Lord of the Rings"\` - Search and convert book
-- \`/voicci-audiobook ~/Documents/book.pdf\` - Convert local file
-- \`/voicci-audiobook -s\` - Check all job statuses
-- \`/voicci-audiobook summary book.pdf\` - Generate summary only
-- \`/voicci-audiobook --help\` - Show all options
-`;
+`
+  }
+];
 
 // Editor detection configurations
 const EDITORS = {
@@ -127,7 +125,6 @@ const EDITORS = {
     name: 'Claude Code',
     detect: () => {
       const homeDir = os.homedir();
-      // Check for claude command or .claude directory
       if (fs.existsSync(path.join(homeDir, '.claude'))) return true;
       try {
         execFileSync('which', ['claude'], { stdio: 'ignore' });
@@ -136,11 +133,7 @@ const EDITORS = {
         return false;
       }
     },
-    // Install to both skills/ and commands/ so slash commands appear in autocomplete
-    skillsDirs: () => [
-      path.join(os.homedir(), '.claude', 'commands'),
-      path.join(os.homedir(), '.claude', 'skills')
-    ]
+    skillsDir: () => path.join(os.homedir(), '.claude', 'skills')
   },
   'OpenCode': {
     name: 'OpenCode',
@@ -154,7 +147,7 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDirs: () => [path.join(os.homedir(), '.opencode', 'skills')]
+    skillsDir: () => path.join(os.homedir(), '.opencode', 'skills')
   },
   'Cursor': {
     name: 'Cursor',
@@ -169,17 +162,16 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDirs: () => {
+    skillsDir: () => {
       const homeDir = os.homedir();
       const locations = [
         path.join(homeDir, '.cursor', 'skills'),
         path.join(homeDir, 'Library', 'Application Support', 'Cursor', 'skills')
       ];
       for (const loc of locations) {
-        const parent = path.dirname(loc);
-        if (fs.existsSync(parent)) return [loc];
+        if (fs.existsSync(path.dirname(loc))) return loc;
       }
-      return [locations[0]];
+      return locations[0];
     }
   },
   'Windsurf': {
@@ -194,64 +186,65 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDirs: () => [path.join(os.homedir(), '.windsurf', 'skills')]
+    skillsDir: () => path.join(os.homedir(), '.windsurf', 'skills')
   }
 };
 
-function installSkillFile(skillsDir, skillName, content) {
-  const skillFile = path.join(skillsDir, skillName);
-  
+function installSkill(skillsDir, skill) {
+  const skillDir = path.join(skillsDir, skill.dirName);
+  const skillFile = path.join(skillDir, 'SKILL.md');
+
   // Check if already installed
   if (fs.existsSync(skillFile)) {
     const existingContent = fs.readFileSync(skillFile, 'utf8');
-    if (existingContent.includes('voicci $ARGUMENTS')) {
+    if (existingContent.includes('voicci')) {
       return 'exists';
     }
   }
-  
-  // Write the skill file
-  fs.writeFileSync(skillFile, content, 'utf8');
+
+  // Create skill directory and write SKILL.md
+  fs.mkdirSync(skillDir, { recursive: true });
+  fs.writeFileSync(skillFile, skill.content, 'utf8');
+
+  // Clean up legacy flat file if it exists
+  const legacyFile = path.join(skillsDir, `${skill.dirName}.md`);
+  if (fs.existsSync(legacyFile)) {
+    fs.unlinkSync(legacyFile);
+  }
+
   return 'new';
 }
 
 function detectAndInstall() {
-  const homeDir = os.homedir();
   const installedEditors = [];
   const failedEditors = [];
 
-  console.log('🔍 Detecting AI code editors...\n');
+  console.log('Detecting AI code editors...\n');
 
-  // Detect and install for each editor
   for (const [key, editor] of Object.entries(EDITORS)) {
     try {
       if (editor.detect()) {
-        console.log(`✓ Found ${editor.name}`);
+        console.log(`  Found ${editor.name}`);
 
-        const dirs = editor.skillsDirs();
+        const skillsDir = editor.skillsDir();
+
+        // Create skills directory if needed
+        if (!fs.existsSync(skillsDir)) {
+          fs.mkdirSync(skillsDir, { recursive: true });
+        }
 
         let anyNew = false;
-        let allExist = true;
 
-        for (const skillsDir of dirs) {
-          // Create directory if it doesn't exist
-          if (!fs.existsSync(skillsDir)) {
-            fs.mkdirSync(skillsDir, { recursive: true });
-          }
-
-          // Install both skills
-          const simpleStatus = installSkillFile(skillsDir, SKILL_NAME_SIMPLE, SKILL_CONTENT_SIMPLE);
-          const detailedStatus = installSkillFile(skillsDir, SKILL_NAME_DETAILED, SKILL_CONTENT_DETAILED);
-
-          if (simpleStatus === 'new' || detailedStatus === 'new') {
+        for (const skill of SKILLS) {
+          const status = installSkill(skillsDir, skill);
+          if (status === 'new') {
             anyNew = true;
-            allExist = false;
-            if (simpleStatus === 'new') console.log(`  ↳ Installed: ${path.join(skillsDir, SKILL_NAME_SIMPLE)}`);
-            if (detailedStatus === 'new') console.log(`  ↳ Installed: ${path.join(skillsDir, SKILL_NAME_DETAILED)}`);
+            console.log(`    Installed: ${path.join(skillsDir, skill.dirName, 'SKILL.md')}`);
           }
         }
 
         if (!anyNew) {
-          console.log(`  ↳ Skills already installed`);
+          console.log(`    Skills already installed`);
           installedEditors.push({ name: editor.name, status: 'exists' });
         } else {
           installedEditors.push({ name: editor.name, status: 'new' });
@@ -263,37 +256,36 @@ function detectAndInstall() {
   }
 
   // Summary
-  console.log('\n' + '═'.repeat(60));
+  console.log('\n' + '='.repeat(60));
 
   if (installedEditors.length > 0) {
-    console.log('\n✅ Voicci CLI installed successfully!');
-    console.log('\n📦 Command-line tool: voicci');
-    console.log('🔧 Skill commands: /voicci  OR  /voicci-audiobook');
-    console.log('\n📍 Installed in:');
+    console.log('\nVoicci CLI installed successfully!');
+    console.log('\n  Command-line tool: voicci');
+    console.log('  Skill commands: /voicci  OR  /voicci-audiobook');
+    console.log('\n  Installed in:');
     installedEditors.forEach(editor => {
       const status = editor.status === 'new' ? '(new)' : '(already installed)';
-      console.log(`  • ${editor.name} ${status}`);
+      console.log(`    ${editor.name} ${status}`);
     });
 
-    console.log('\n💡 Usage:');
-    console.log('  1. Restart your AI code editor');
-    console.log('  2. Use: /voicci "search query" (simple)');
-    console.log('  3. Or: /voicci-audiobook "search query" (detailed docs)');
-    console.log('  4. Or CLI: voicci "your search query"');
+    console.log('\n  Usage:');
+    console.log('    1. Restart your AI code editor');
+    console.log('    2. Type: /voicci "search query"');
+    console.log('    3. Or CLI: voicci "your search query"');
   } else {
-    console.log('\n⚠️  No supported AI code editors detected');
-    console.log('\nSupported editors: Claude Code, OpenCode, Cursor, Windsurf');
-    console.log('\n✓ You can still use the CLI: voicci <command>');
+    console.log('\n  No supported AI code editors detected');
+    console.log('\n  Supported editors: Claude Code, OpenCode, Cursor, Windsurf');
+    console.log('\n  You can still use the CLI: voicci <command>');
   }
 
   if (failedEditors.length > 0) {
-    console.log('\n⚠️  Failed to install for:');
+    console.log('\n  Failed to install for:');
     failedEditors.forEach(({ name, error }) => {
-      console.log(`  • ${name}: ${error}`);
+      console.log(`    ${name}: ${error}`);
     });
   }
 
-  console.log('\n' + '═'.repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log();
 }
 
