@@ -9,24 +9,17 @@ coverage/
 
 # Configuration files
 .git/
+.github/
 .gitignore
 .DS_Store
 .env
 .vscode/
 .idea/
 
-# Documentation (except README)
-docs/
-BRANDING-FINAL.md
-URL-STRUCTURE.md
-DEPLOYMENT-VOICCI-CLI.md
-SECURITY-AUDIT.md
-SECURITY-FINDINGS.md
-UI-CONSISTENCY-CHECK.md
-RENAME-COMPLETE.md
-LEGAL-REVIEW.md
-SUMMARY-FEATURE.md
-QUICKSTART.md
+# Backup and unused files
+*.backup
+lib/text-cleaner-v2.js
+install.sh
 
 # Build artifacts
 node_modules/
@@ -46,3 +39,4 @@ Thumbs.db
 
 # Website (not needed in npm package)
 website/
+docs/

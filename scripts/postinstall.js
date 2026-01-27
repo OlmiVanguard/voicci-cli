@@ -136,13 +136,16 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDir: () => path.join(os.homedir(), '.claude', 'skills')
+    // Install to both skills/ and commands/ so slash commands appear in autocomplete
+    skillsDirs: () => [
+      path.join(os.homedir(), '.claude', 'commands'),
+      path.join(os.homedir(), '.claude', 'skills')
+    ]
   },
   'OpenCode': {
     name: 'OpenCode',
     detect: () => {
       const homeDir = os.homedir();
-      // Check for opencode command or config directory
       if (fs.existsSync(path.join(homeDir, '.opencode'))) return true;
       try {
         execFileSync('which', ['opencode'], { stdio: 'ignore' });
@@ -151,13 +154,12 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDir: () => path.join(os.homedir(), '.opencode', 'skills')
+    skillsDirs: () => [path.join(os.homedir(), '.opencode', 'skills')]
   },
   'Cursor': {
     name: 'Cursor',
     detect: () => {
       const homeDir = os.homedir();
-      // Check for cursor command or config directory
       if (fs.existsSync(path.join(homeDir, '.cursor'))) return true;
       if (fs.existsSync(path.join(homeDir, 'Library', 'Application Support', 'Cursor'))) return true;
       try {
@@ -167,25 +169,23 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDir: () => {
+    skillsDirs: () => {
       const homeDir = os.homedir();
-      // Try common locations
       const locations = [
         path.join(homeDir, '.cursor', 'skills'),
         path.join(homeDir, 'Library', 'Application Support', 'Cursor', 'skills')
       ];
       for (const loc of locations) {
         const parent = path.dirname(loc);
-        if (fs.existsSync(parent)) return loc;
+        if (fs.existsSync(parent)) return [loc];
       }
-      return locations[0]; // Default to first
+      return [locations[0]];
     }
   },
   'Windsurf': {
     name: 'Windsurf',
     detect: () => {
       const homeDir = os.homedir();
-      // Check for windsurf command or config directory
       if (fs.existsSync(path.join(homeDir, '.windsurf'))) return true;
       try {
         execFileSync('which', ['windsurf'], { stdio: 'ignore' });
@@ -194,7 +194,7 @@ const EDITORS = {
         return false;
       }
     },
-    skillsDir: () => path.join(os.homedir(), '.windsurf', 'skills')
+    skillsDirs: () => [path.join(os.homedir(), '.windsurf', 'skills')]
   }
 };
 
@@ -227,26 +227,33 @@ function detectAndInstall() {
       if (editor.detect()) {
         console.log(`✓ Found ${editor.name}`);
 
-        const skillsDir = editor.skillsDir();
+        const dirs = editor.skillsDirs();
 
-        // Create skills directory if it doesn't exist
-        if (!fs.existsSync(skillsDir)) {
-          fs.mkdirSync(skillsDir, { recursive: true });
+        let anyNew = false;
+        let allExist = true;
+
+        for (const skillsDir of dirs) {
+          // Create directory if it doesn't exist
+          if (!fs.existsSync(skillsDir)) {
+            fs.mkdirSync(skillsDir, { recursive: true });
+          }
+
+          // Install both skills
+          const simpleStatus = installSkillFile(skillsDir, SKILL_NAME_SIMPLE, SKILL_CONTENT_SIMPLE);
+          const detailedStatus = installSkillFile(skillsDir, SKILL_NAME_DETAILED, SKILL_CONTENT_DETAILED);
+
+          if (simpleStatus === 'new' || detailedStatus === 'new') {
+            anyNew = true;
+            allExist = false;
+            if (simpleStatus === 'new') console.log(`  ↳ Installed: ${path.join(skillsDir, SKILL_NAME_SIMPLE)}`);
+            if (detailedStatus === 'new') console.log(`  ↳ Installed: ${path.join(skillsDir, SKILL_NAME_DETAILED)}`);
+          }
         }
 
-        // Install both skills
-        const simpleStatus = installSkillFile(skillsDir, SKILL_NAME_SIMPLE, SKILL_CONTENT_SIMPLE);
-        const detailedStatus = installSkillFile(skillsDir, SKILL_NAME_DETAILED, SKILL_CONTENT_DETAILED);
-
-        const simpleFile = path.join(skillsDir, SKILL_NAME_SIMPLE);
-        const detailedFile = path.join(skillsDir, SKILL_NAME_DETAILED);
-
-        if (simpleStatus === 'exists' && detailedStatus === 'exists') {
+        if (!anyNew) {
           console.log(`  ↳ Skills already installed`);
           installedEditors.push({ name: editor.name, status: 'exists' });
         } else {
-          if (simpleStatus === 'new') console.log(`  ↳ Installed: ${simpleFile}`);
-          if (detailedStatus === 'new') console.log(`  ↳ Installed: ${detailedFile}`);
           installedEditors.push({ name: editor.name, status: 'new' });
         }
       }
